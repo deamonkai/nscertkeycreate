@@ -1,0 +1,22 @@
+{
+  "login": [
+    {
+      "cert_verified": "false",
+      "two_factor_authentication_label": "",
+      "login_type": "",
+      "challenge_token": "",
+      "sessionid": "##9830605601DF76DE8BF109E6D556FED957B9885214829D9F1D8A110C274F",
+      "session_creator": "",
+      "session_timeout": "900",
+      "ID": "",
+      "permission": "superuser",
+      "force_change_password": "false",
+      "auth_with_remote_pubkey": "0",
+      "tenant_name": "Owner",
+      "client_port": "-1",
+      "username": "",
+      "challenge": "",
+      "client_ip": ""
+    }
+  ]
+}
