@@ -1,8 +1,0 @@
-{
-  "ns_command": [
-    {
-      "command": "shell cat /nsconfig/ssl/app1.csr",
-      "id": "faa5fab8-8520-461b-b3f0-d315633d25d4"
-    }
-  ]
-}
