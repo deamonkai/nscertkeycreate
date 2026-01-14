@@ -13,7 +13,9 @@ requires-python = ">=3.8"
 dependencies = []
 
 # Installable console script that exposes `nsctl` entry point
-scripts = { nsctl = "nscert.cli:main" }
-
+# Installable console scripts
+[project.scripts]
+nsctl = "nscert.cli:main"
+certctl = "certctl.cli:main"
 [tool.setuptools]
 packages = { find = {} }
