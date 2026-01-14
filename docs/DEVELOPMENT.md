@@ -17,4 +17,4 @@ Then run the tests:
 python -m pytest -q
 ```
 
-Current work: scaffolded `nscert` package and implemented `extract_pem_from_json` utility with tests.
+Current work: scaffolded `certctl` package and implemented `extract_pem_from_json` utility with tests.

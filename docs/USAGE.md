@@ -1,33 +1,33 @@
 Usage
 =====
 
-A thin wrapper script `bin/nsctl` is included for development; it forwards
-arguments to the `nscert` CLI. You can also run the CLI directly with the
+A thin wrapper script `bin/certctl` is included for development; it forwards
+arguments to the `certctl` CLI. You can also run the CLI directly with the
 project environment's Python:
 
 Run keygen via the package CLI (using the project's venv python):
 
 ```bash
-/Users/michaelmolloy/tools/nscertkeycreate/.venv/bin/python -m nscert.cli keygen --kind rsa --passphrase "fromcli" --keychain-service svc1 --save-passphrase
+/Users/michaelmolloy/tools/nscertkeycreate/.venv/bin/python -m certctl.cli keygen --kind rsa --passphrase "fromcli" --keychain-service svc1 --save-passphrase
 ```
 
 Or make the wrapper executable and use it directly:
 
 ```bash
-chmod +x bin/nsctl
-./bin/nsctl keygen --kind rsa --passphrase "fromcli" --keychain-service svc1 --save-passphrase
+chmod +x bin/certctl
+./bin/certctl keygen --kind rsa --passphrase "fromcli" --keychain-service svc1 --save-passphrase
 ```
 
 Installable package
 -------------------
 
-To install the package editable (development) mode so `nsctl` is available on your PATH:
+To install the package editable (development) mode so `certctl` is available on your PATH:
 
 ```bash
 # from project root
 python -m pip install -e .
-# now `nsctl` should be on your PATH (provided your venv is active)
-nsctl keygen --kind rsa --keychain-service svc1 --save-passphrase
+# now `certctl` should be on your PATH (provided your venv is active)
+certctl keygen --kind rsa --keychain-service svc1 --save-passphrase
 ```
 
 CSR commands
@@ -36,17 +36,17 @@ CSR commands
 Create a CSR from a private key:
 
 ```bash
-nsctl csr create --key-file /path/to/key.pem --subject "/C=US/ST=CA/CN=example.com" --san www.example.com --san 10.0.0.1 --out /tmp/example.csr
+certctl csr create --key-file /path/to/key.pem --subject "/C=US/ST=CA/CN=example.com" --san www.example.com --san 10.0.0.1 --out /tmp/example.csr
 ```
 
 Create a CSR interactively (prompts for subject fields and SANs if none supplied):
 
 ```bash
-nsctl csr create --key-file /path/to/key.pem --out /tmp/example.csr
+certctl csr create --key-file /path/to/key.pem --out /tmp/example.csr
 # prompts for C, ST, L, O, OU, CN and then SANs (one per line)
 ```
 
-Note about wildcard SANs: Wildcard SANs (for example, `*.example.com`) broaden the scope of a certificate and can be risky. When a wildcard SAN is entered interactively `nsctl` will prompt you to explicitly confirm by typing `yes`. If you pass wildcard SANs on the CLI, `nsctl` will prompt for confirmation in interactive terminals; in non-interactive runs (CI or scripts) you must pass `--allow-wildcard` to proceed. The `--allow-wildcard` flag exists on both `csr create` and `csr submit` — use it with care.
+Note about wildcard SANs: Wildcard SANs (for example, `*.example.com`) broaden the scope of a certificate and can be risky. When a wildcard SAN is entered interactively `certctl` will prompt you to explicitly confirm by typing `yes`. If you pass wildcard SANs on the CLI, `certctl` will prompt for confirmation in interactive terminals; in non-interactive runs (CI or scripts) you must pass `--allow-wildcard` to proceed. The `--allow-wildcard` flag exists on both `csr create` and `csr submit` — use it with care.
 
 SAN validation
 --------------
@@ -61,9 +61,9 @@ Invalid SANs will be rejected interactively (you'll be prompted again) or will c
 Show CSR details (parsed by openssl):
 
 ```bash
-nsctl csr show --csr-file /tmp/example.csr
+certctl csr show --csr-file /tmp/example.csr
 ```
 
 Notes:
 - Prefer reading/writing passphrases using `--keychain-service` and `--save-passphrase` instead of placing passphrases directly on the command line in production.
-- The wrapper is intentionally minimal for development; packaging adds the `nsctl` entry point for convenience.
+- The wrapper is intentionally minimal for development; packaging adds the `certctl` entry point for convenience.

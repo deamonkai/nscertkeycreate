@@ -1,11 +1,11 @@
 """Tests for CLI CSR commands."""
 import subprocess
-from nscert import cli
+from certctl import cli
 
 
 def test_cli_csr_create_and_show(monkeypatch, tmp_path):
     # Generate a key and write to file
-    from nscert import keygen
+    from certctl import keygen
     key_pem = keygen.generate_private_key(kind="rsa", bits=1024)
     key_file = tmp_path / "k.pem"
     key_file.write_text(key_pem)

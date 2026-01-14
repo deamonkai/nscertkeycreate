@@ -1,9 +1,9 @@
 """Tests for CSR create when wildcard SANs are provided on the CLI."""
-from nscert import cli
+from certctl import cli
 
 
 def test_cli_csr_create_cli_san_wildcard_interactive_confirm_yes(monkeypatch, tmp_path):
-    from nscert import keygen, csr as csrmod
+    from certctl import keygen, csr as csrmod
     key_pem = keygen.generate_private_key(kind="rsa", bits=1024)
     key_file = tmp_path / "k.pem"
     key_file.write_text(key_pem)
@@ -22,7 +22,7 @@ def test_cli_csr_create_cli_san_wildcard_interactive_confirm_yes(monkeypatch, tm
 
 
 def test_cli_csr_create_cli_san_wildcard_interactive_confirm_no(monkeypatch, tmp_path):
-    from nscert import keygen, csr as csrmod
+    from certctl import keygen, csr as csrmod
     key_pem = keygen.generate_private_key(kind="rsa", bits=1024)
     key_file = tmp_path / "k.pem"
     key_file.write_text(key_pem)
@@ -42,7 +42,7 @@ def test_cli_csr_create_cli_san_wildcard_interactive_confirm_no(monkeypatch, tmp
 
 
 def test_cli_csr_create_cli_san_wildcard_noninteractive_fails(monkeypatch, tmp_path):
-    from nscert import keygen
+    from certctl import keygen
     key_pem = keygen.generate_private_key(kind="rsa", bits=1024)
     key_file = tmp_path / "k.pem"
     key_file.write_text(key_pem)
@@ -57,7 +57,7 @@ def test_cli_csr_create_cli_san_wildcard_noninteractive_fails(monkeypatch, tmp_p
 
 
 def test_cli_csr_create_cli_san_wildcard_allow_flag_noninteractive(monkeypatch, tmp_path):
-    from nscert import keygen, csr as csrmod
+    from certctl import keygen, csr as csrmod
     key_pem = keygen.generate_private_key(kind="rsa", bits=1024)
     key_file = tmp_path / "k.pem"
     key_file.write_text(key_pem)

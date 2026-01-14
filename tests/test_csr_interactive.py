@@ -1,5 +1,5 @@
 """Tests for interactive CSR prompting."""
-from nscert import csr
+from certctl import csr
 
 
 def test_prompt_for_subject_and_sans(monkeypatch):
@@ -29,7 +29,7 @@ def test_prompt_for_subject_and_sans(monkeypatch):
 
 def test_cli_csr_create_interactive(monkeypatch, tmp_path):
     # Generate a key
-    from nscert import keygen, cli
+    from certctl import keygen, cli
     key_pem = keygen.generate_private_key(kind="rsa", bits=1024)
     key_file = tmp_path / "k.pem"
     key_file.write_text(key_pem)
@@ -54,7 +54,7 @@ def test_cli_csr_create_interactive(monkeypatch, tmp_path):
     assert out.exists()
 
     # Target SAN should be present
-    from nscert import csr as csrmod
+    from certctl import csr as csrmod
     csr_pem = out.read_text()
     assert csrmod.csr_has_san(csr_pem, "DNS:www.example.com")
     assert csrmod.csr_has_san(csr_pem, "IP:10.0.0.1")

@@ -1,5 +1,5 @@
 """CLI tests for creating CSR from an existing certificate."""
-from nscert import cli, keygen
+from certctl import cli, keygen
 
 
 def test_cli_csr_create_from_cert(tmp_path):

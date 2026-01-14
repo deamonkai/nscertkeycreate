@@ -1,7 +1,7 @@
 """Tests for OpenSSL-based key generation helpers."""
 
 import re
-from nscert.keygen import generate_rsa_key, generate_ec_key, generate_private_key
+from certctl.keygen import generate_rsa_key, generate_ec_key, generate_private_key
 
 # We accept PKCS#1 (RSA PRIVATE KEY), PKCS#8 (PRIVATE KEY) or encrypted forms.
 PEM_PRIV_RE = re.compile(r"-----BEGIN [A-Z0-9 -]*PRIVATE KEY-----")

@@ -1,7 +1,7 @@
-"""Test verifying `pyproject.toml` exposes `nsctl` script entry."""
+"""Test verifying `pyproject.toml` exposes `certctl` script entry."""
 
 
 def test_pyproject_has_nsctl_entry():
     content = open("pyproject.toml").read()
-    assert "nsctl" in content
-    assert "nscert.cli:main" in content
+    assert "certctl" in content
+    assert "certctl.cli:main" in content

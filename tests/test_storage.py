@@ -1,10 +1,10 @@
-"""Tests for macOS Keychain helpers in `nscert.storage`.
+"""Tests for macOS Keychain helpers in `certctl.storage`.
 
 These tests stub out `subprocess.run` and `getpass.getpass` to simulate
 macOS behavior.
 """
 import subprocess
-from nscert import storage
+from certctl import storage
 
 
 class DummyCompleted:
@@ -37,7 +37,7 @@ def test_get_or_prompt_passphrase_stores(monkeypatch):
 
     stored = {}
 
-    def fake_set(service, password, account="nscert"):
+    def fake_set(service, password, account="certctl"):
         stored[service] = password
         return True
 

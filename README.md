@@ -1,30 +1,57 @@
-# nscertkeycreate.py
+# certctl
 
-A NetScaler Console–centric tool to generate encrypted SSL private keys and CSRs,
-with optional delivery to managed ADC Primary nodes.
+A set of small, composable Python scripts for certificate lifecycle automation across:
 
-Features:
-- RSA 4096 or ECDSA (P-256 / P-384)
-- Console-only or Console-delivered-to-ADC workflows
-- macOS Keychain–backed credential storage
-- Interactive by default, automation-friendly when needed
+- **NetScaler Console** (test / DR / prod consoles)
+- **NetScaler ADCs** (via Console as the central management plane)
+- **External services** (e.g., Imperva WAF)
 
-## Orchestrator (certctl)
+This repo is intentionally modular: each script does **one job well**, so you can
+chain them in CI/CD, change-management workflows, or a future orchestrator.
 
-Install (editable):
+## Current status
+
+Implemented (working end-to-end in lab):
+- **Create private key on NetScaler Console**, download it, and generate a **PEM CSR locally**.
+
+Planned / scaffolding:
+- Polling/reporting of certificate expiry across Console + external vendors
+- CA submission adapters (ADCS, Sectigo, etc.)
+- Upload key/cert to Console and deployment to ADCs (with automatic CA chain linking)
+- External WAF deployment (Imperva)
+
+## Directory layout
+
+- `certctl/` - library code used by scripts
+- `certctl/scripts/` - runnable scripts (single-purpose)
+
+### Included scripts
+
+- `certctl/scripts/nsconsole_certpoll.py` - poll a NetScaler Console for stored certificate expiry data and write a table / CSV / JSON report.
+- `legacy/` - the original monolithic prototype script kept for reference
+
+## Quick start (lab)
+
+Create a key on Console, download it, and create a CSR:
 
 ```bash
-pip install -e .
+python3 -m certctl keycsr-console \
+  --console https://192.168.113.2 \
+  --user nsroot \
+  --app-name example.com \
+  --out-dir ./out \
+  --insecure
 ```
 
-Create key+CSR (delegates to legacy for now):
+Notes:
+- `--app-name` is the CN base; with `--rotate` (default ON) we timestamp the filenames and **never reuse keys**.
+- The CSR is created locally with OpenSSL because `ns_ssl_csr` is not supported in some Console deployments.
 
-```bash
-certctl new -- --console https://CONSOLE --user nsroot --app-name example.com --out-dir ./out --insecure
-```
+## Security
 
-Poll expiries (placeholder scaffolding):
+- Secrets can be provided via env vars (recommended for CI):
+  - `CERTCTL_CONSOLE_PASSWORD`
+  - `CERTCTL_KEY_PASSPHRASE`
+- On **macOS**, you can optionally store these in Keychain via prompts.
+- Enterprise vault integration (AWS Secrets Manager / Azure Key Vault / etc.) will be added as a separate module.
 
-```bash
-certctl poll --console https://CONSOLE --user nsroot --days 30 --out ./reports --insecure
-```

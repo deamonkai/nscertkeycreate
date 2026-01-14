@@ -1,5 +1,5 @@
 """Tests for creating CSR from an existing certificate's metadata."""
-from nscert import keygen, csr
+from certctl import keygen, csr
 
 
 def test_create_csr_from_cert(tmp_path):

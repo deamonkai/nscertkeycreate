@@ -1,6 +1,6 @@
 def test_format_warning_colored_and_plain(monkeypatch, capsys):
     import sys
-    from nscert import utils
+    from certctl import utils
 
     # Non-tty stream -> plain
     class Fake:
@@ -23,7 +23,7 @@ def test_format_warning_colored_and_plain(monkeypatch, capsys):
 
 def test_print_warning_writes(monkeypatch, capsys):
     import sys
-    from nscert import utils
+    from certctl import utils
 
     class FakeTTY:
         def isatty(self):

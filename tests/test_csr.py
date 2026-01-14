@@ -1,7 +1,7 @@
 """Tests for CSR creation using OpenSSL CLI."""
 import tempfile
-from nscert import keygen
-from nscert import csr
+from certctl import keygen
+from certctl import csr
 
 
 def test_create_csr_with_san(tmp_path):

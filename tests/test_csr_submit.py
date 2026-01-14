@@ -1,11 +1,11 @@
 """Tests for CSR submit flow using the Mock CA adapter."""
-from nscert import cli
-from nscert.ca.mock import MockCA
+from certctl import cli
+from certctl.ca.mock import MockCA
 
 
 def test_csr_submit_mock(tmp_path):
     # Create a key and a CSR
-    from nscert import keygen, csr
+    from certctl import keygen, csr
     key_pem = keygen.generate_private_key(kind="rsa", bits=1024)
     key_file = tmp_path / "k.pem"
     key_file.write_text(key_pem)
@@ -20,7 +20,7 @@ def test_csr_submit_mock(tmp_path):
 
 
 def test_csr_submit_reject_wildcard(tmp_path):
-    from nscert import keygen, csr
+    from certctl import keygen, csr
     key_pem = keygen.generate_private_key(kind="rsa", bits=1024)
     key_file = tmp_path / "k.pem"
     key_file.write_text(key_pem)

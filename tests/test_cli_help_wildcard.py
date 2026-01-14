@@ -2,7 +2,7 @@ import pytest
 
 
 def test_csr_create_help_contains_wildcard(capsys):
-    from nscert import cli
+    from certctl import cli
     p = cli.build_parser()
     with pytest.raises(SystemExit):
         p.parse_args(["csr", "create", "--help"])

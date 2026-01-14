@@ -1,6 +1,6 @@
 """Tests for SAN validation and CLI rejection of invalid SANs."""
 import pytest
-from nscert.csr import normalize_and_validate_san
+from certctl.csr import normalize_and_validate_san
 
 
 def test_normalize_dns():
@@ -20,7 +20,7 @@ def test_invalid_san_raises():
 
 def test_cli_rejects_bad_san(tmp_path):
     # Generate a key
-    from nscert import keygen, cli
+    from certctl import keygen, cli
     key_pem = keygen.generate_private_key(kind="rsa", bits=1024)
     key_file = tmp_path / "k.pem"
     key_file.write_text(key_pem)

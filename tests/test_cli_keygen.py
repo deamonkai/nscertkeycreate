@@ -1,5 +1,5 @@
 """Tests for the CLI wiring of keygen --save-passphrase flag."""
-from nscert import cli
+from certctl import cli
 
 
 def test_cli_keygen_save_passphrase(monkeypatch, capsys):
@@ -9,7 +9,7 @@ def test_cli_keygen_save_passphrase(monkeypatch, capsys):
         called.update(kwargs)
         return "PEM-KEY"
 
-    monkeypatch.setattr("nscert.keygen.generate_rsa_key", fake_gen_rsa)
+    monkeypatch.setattr("certctl.keygen.generate_rsa_key", fake_gen_rsa)
 
     # Simulate cli args
     rc = cli.main(["keygen", "--kind", "rsa", "--bits", "1024", "--passphrase", "fromcli", "--keychain-service", "svc-cli", "--save-passphrase"]) 
@@ -24,7 +24,7 @@ def test_cli_keygen_write_file(monkeypatch, tmp_path):
     def fake_gen_ec(**kwargs):
         return "PEM-EC"
 
-    monkeypatch.setattr("nscert.keygen.generate_ec_key", fake_gen_ec)
+    monkeypatch.setattr("certctl.keygen.generate_ec_key", fake_gen_ec)
 
     out = tmp_path / "key.pem"
 

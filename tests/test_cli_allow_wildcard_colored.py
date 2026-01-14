@@ -1,6 +1,6 @@
 def test_allow_wildcard_warning_colored_when_tty(monkeypatch, tmp_path, capsys):
-    from nscert import cli
-    from nscert import keygen
+    from certctl import cli
+    from certctl import keygen
     import sys
 
     key_pem = keygen.generate_private_key(kind="rsa", bits=1024)

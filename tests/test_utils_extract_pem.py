@@ -1,7 +1,7 @@
-"""Tests for nscert.utils.extract_pem_from_json"""
+"""Tests for certctl.utils.extract_pem_from_json"""
 
-from nscert.utils import extract_pem_from_json
-from nscert.netscaler import extract_csr_text
+from certctl.utils import extract_pem_from_json
+from certctl.netscaler import extract_csr_text
 
 
 def test_extract_from_ns_ssl_csr():

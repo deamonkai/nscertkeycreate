@@ -1,6 +1,6 @@
 def test_allow_wildcard_warning_prints(monkeypatch, tmp_path, capsys):
-    from nscert import cli
-    from nscert import keygen
+    from certctl import cli
+    from certctl import keygen
 
     key_pem = keygen.generate_private_key(kind="rsa", bits=1024)
     key_file = tmp_path / "k.pem"

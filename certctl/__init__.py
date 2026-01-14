@@ -1,10 +1,6 @@
-"""certctl: orchestration layer for certificate lifecycle tasks.
+"""certctl package
 
-This repository is intentionally decomposed into small, purpose-built scripts.
-`certctl` is the top-level CLI that coordinates those scripts.
-
-Nothing in `certctl` should talk directly to a specific vendor/CA/device.
-Those integrations live in dedicated modules (e.g., NetScaler Console NITRO).
+Lightweight package scaffold for Netscaler certificate tooling.
 """
 
-__all__ = ["cli"]
+__all__ = ["utils", "netscaler"]

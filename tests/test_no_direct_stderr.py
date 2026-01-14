@@ -4,7 +4,7 @@ import pathlib
 def test_no_direct_stderr_writes():
     root = pathlib.Path(__file__).resolve().parents[1]
     # Only check package sources and the top-level script(s); ignore virtualenv and tests
-    py_files = list((root / 'nscert').rglob('*.py'))
+    py_files = list((root / 'certctl').rglob('*.py'))
     main_script = root / 'nscertkeycreate.py'
     if main_script.exists():
         py_files.append(main_script)

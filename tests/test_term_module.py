@@ -1,6 +1,6 @@
 def test_term_format_and_print(monkeypatch):
     import sys
-    from nscert import term
+    from certctl import term
 
     class Fake:
         def isatty(self):
