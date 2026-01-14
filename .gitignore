@@ -1,6 +1,7 @@
 #Molloy requested ignore
 out/
 .DS_Store
+*/reports/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
