@@ -59,3 +59,22 @@ def env_or_keychain(env_var: str, service: str, account: str) -> Optional[str]:
     if v:
         return v
     return get_from_keychain(service, account)
+
+
+# ---------------------------------------------------------------------------
+# Backwards-compatible aliases
+# ---------------------------------------------------------------------------
+
+def is_macos_keychain_available() -> bool:
+    """Return True if this host is macOS (Keychain supported via `security`)."""
+    return _is_macos()
+
+
+def get_secret(service: str, account: str) -> Optional[str]:
+    """Alias for get_from_keychain(service, account)."""
+    return get_from_keychain(service, account)
+
+
+def set_secret(service: str, account: str, secret: str) -> None:
+    """Alias for set_in_keychain(service, account, secret)."""
+    set_in_keychain(service, account, secret)

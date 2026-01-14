@@ -1,0 +1,34 @@
+{
+  "generated_at": "2026-01-14T19:42:00.837398+00:00",
+  "expired": [
+    {
+      "file_name": "192.168.113.6%25wildcard.molloyhome.net_IC_1.tgz",
+      "display_name": "192.168.113.5-192.168.113.6",
+      "days_to_expiry": 0,
+      "valid_to": "Sep 30 18:14:03 2024 GMT",
+      "no_of_bound_entities": 0
+    },
+    {
+      "file_name": "192.168.113.6%25wildcard.molloyhome.net-RSA.tgz",
+      "display_name": "192.168.113.5-192.168.113.6",
+      "days_to_expiry": 0,
+      "valid_to": "Jul 22 21:47:31 2024 GMT",
+      "no_of_bound_entities": 2
+    },
+    {
+      "file_name": "192.168.113.6%25wildcard.molloyhome.net_IC_2.tgz",
+      "display_name": "192.168.113.5-192.168.113.6",
+      "days_to_expiry": 0,
+      "valid_to": "Sep 15 16:00:00 2025 GMT",
+      "no_of_bound_entities": 0
+    },
+    {
+      "file_name": "192.168.113.6%25wildcard.molloyhome.net.tgz",
+      "display_name": "192.168.113.5-192.168.113.6",
+      "days_to_expiry": 0,
+      "valid_to": "Jul 18 15:27:02 2024 GMT",
+      "no_of_bound_entities": 4
+    }
+  ],
+  "expiring": []
+}
