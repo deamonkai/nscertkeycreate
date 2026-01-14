@@ -3,6 +3,27 @@ out/
 .DS_Store
 */reports/*
 
+# Cert/key artifacts (safety)
+*.key
+*.csr
+*.crt
+*.cer
+*.pem
+*.pfx
+*.p12
+*.der
+*.jks
+
+# Temporary openssl configs
+*.cnf
+*.conf
+
+# Local debug logs
+logs/
+*.log
+
+#below is beyond the original Molloy requested ignore content
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
