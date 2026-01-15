@@ -1,0 +1,71 @@
+{
+  "generated_utc": "2026-01-14T20:17:36.678328+00:00",
+  "console": "https://192.168.113.2",
+  "window_days": 60,
+  "total_records": 7,
+  "records": [
+    {
+      "name": "UNKNOWN",
+      "subject": null,
+      "issuer": null,
+      "not_after": null,
+      "days_remaining": null,
+      "source": "console",
+      "raw": {}
+    },
+    {
+      "name": "UNKNOWN",
+      "subject": null,
+      "issuer": null,
+      "not_after": null,
+      "days_remaining": null,
+      "source": "console",
+      "raw": {}
+    },
+    {
+      "name": "UNKNOWN",
+      "subject": null,
+      "issuer": null,
+      "not_after": null,
+      "days_remaining": null,
+      "source": "console",
+      "raw": {}
+    },
+    {
+      "name": "UNKNOWN",
+      "subject": null,
+      "issuer": null,
+      "not_after": null,
+      "days_remaining": null,
+      "source": "console",
+      "raw": {}
+    },
+    {
+      "name": "UNKNOWN",
+      "subject": null,
+      "issuer": null,
+      "not_after": null,
+      "days_remaining": null,
+      "source": "console",
+      "raw": {}
+    },
+    {
+      "name": "UNKNOWN",
+      "subject": null,
+      "issuer": null,
+      "not_after": null,
+      "days_remaining": null,
+      "source": "console",
+      "raw": {}
+    },
+    {
+      "name": "UNKNOWN",
+      "subject": null,
+      "issuer": null,
+      "not_after": null,
+      "days_remaining": null,
+      "source": "console",
+      "raw": {}
+    }
+  ]
+}
