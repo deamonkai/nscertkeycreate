@@ -18,7 +18,8 @@ dependencies = [
 certctl-new = "certctl.scripts.keycsr_console:main"
 
 [tool.setuptools]
-packages = ["certctl"]
+packages = ["certctl", "certctl.scripts", "certctl.ca"]
 
 [tool.pytest.ini_options]
 addopts = "-q"
+testpaths = ["tests"]

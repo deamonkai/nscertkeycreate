@@ -1,14 +1,14 @@
 Development
 ===========
 
-This repository is being refactored into a small package with modular components.
+This repository is a small package with modular components.
 
-To run unit tests (requires `pytest`):
+To run unit tests (requires `pytest`, `responses`):
 
-Install pytest (recommend using a virtualenv):
+Install test dependencies (recommend using a virtualenv):
 
 ```bash
-python -m pip install --upgrade pytest
+python -m pip install --upgrade pytest responses
 ```
 
 Then run the tests:
@@ -17,4 +17,4 @@ Then run the tests:
 python -m pytest -q
 ```
 
-Current work: scaffolded `certctl` package and implemented `extract_pem_from_json` utility with tests.
+Current work: NetScaler Console polling + key/CSR scripts with tests.

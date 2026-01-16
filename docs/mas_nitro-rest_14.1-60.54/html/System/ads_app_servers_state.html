@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<link href="../../rdx/css/rdx.css" rel="stylesheet" type="text/css" />
+	<link href="../../index.css" rel="stylesheet" type="text/css" />
+	<title>ads_app_servers_state</title>
+</head>
+<body class="ns_body">
+<p class="ns_wp_header">ads_app_servers_state</p>
+<P>Configuration for ADS Application Server State resource.</P>
+<p class="heading">Read/write properties</p>
+	<p class="property_name">server_state<span class="property_type">&lt;String&gt;</span></p><p class="property_description">State of server.</p>
+	<p class="property_name">monitortotalprobes<span class="property_type">&lt;Integer&gt;</span></p><p class="property_description">Total number of probes by Monitor.</p>
+	<p class="property_name">availability_zone<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Availability Zone.</p>
+	<p class="property_name">customer_name<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Customer name.</p>
+	<p class="property_name">lastresponse<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Last Response from the server.</p>
+	<p class="property_name">monitortotalfailedprobes<span class="property_type">&lt;Integer&gt;</span></p><p class="property_description">Total number of failed probes by Monitor.</p>
+	<p class="property_name">monitorcurrentfailedprobes<span class="property_type">&lt;Integer&gt;</span></p><p class="property_description">Current number of failed probes by Monitor.</p>
+	<p class="property_name">monitor_state<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Current state of the Monitor.</p>
+	<p class="property_name">svc_grp_name<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Service Group Name of the Server.</p>
+	<p class="property_name">poll_time<span class="property_type">&lt;Integer&gt;</span></p><p class="property_description">Last Polling Time.</p>
+	<p class="property_name">ns_ip_address<span class="property_type">&lt;String&gt;</span></p><p class="property_description">NetScaler Console Name.</p>
+	<p class="property_name">port<span class="property_type">&lt;Integer&gt;</span></p><p class="property_description">Server Port.</p>
+	<p class="property_name">monitor_name<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Monitor Name.</p>
+	<p class="property_name">server_name<span class="property_type">&lt;String&gt;</span></p><p class="property_description">IP Address of the Server.</p>
+<p class="heading">Operations</p><p class="property_name">NOTE: In request payload, Mandatory parameters are marked red and bold.<br /><br />The following parameters can be used in the nitro request :</p>
+<p class="property_name">onerror<span class=\"property_type\">&nbsp;&nbsp;&nbsp;&lt;String_value&gt;</span></p><p class="property_description"> Use this parameter to set the onerror status for nitro request. Applicable only for bulk requests.<br />Default value: EXIT<br />Possible values = EXIT, CONTINUE</p><a href="#get" class="operation">get</a><p class="heading"><a name="get">get</a></p><p class="key">URL:<span class="url_value">https://&lt;MGMT-IP&gt;/nitro/v2/config/ads_app_servers_state</span></p><p class="key">HTTPS Method:<span class="value">GET</span></p><p class="key">Request Headers:</p><p class="key"><span class="value">Accept:<span class="value">application/json</span></span></p><p class="key"><span class="value">X-NITRO-USER:<span class="value">username_value&lt;String&gt;</span></span></p><p class="key"><span class="value">X-NITRO-PASS:<span class="value">password_value&lt;String&gt;</span></span></p><p class="key"><span class="value"><span class="value">or</span></span></p><p class="key"><span class="value">Cookie:<span class="value">NITRO_AUTH_TOKEN=token_value&lt;String&gt;</span></span></p><p class="key">Response:</p><p class="key"><span class="value">HTTPS Status Code on Success: 200 OK HTTPS Status Code on Failure: 4xx <string> (for general HTTPS errors) or 5xx <string> (for NetScaler-MAS-specific errors). The response payload provides details of the error</span></p><p class="key">Response Headers:</p><p class="key"><span class="value">Content-Type:<span class="value">application/json</span></span></p><p class="key">Response Payload:<span class="value">JSON</span></p><p class="payload">{ "errorcode": 0, "message": "Done", "severity": &ltString_value&gt, "ads_app_servers_state":[{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"server_state":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"monitortotalprobes":&lt;Integer_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"availability_zone":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"customer_name":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"lastresponse":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"monitortotalfailedprobes":&lt;Integer_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"monitorcurrentfailedprobes":&lt;Integer_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"monitor_state":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"svc_grp_name":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"poll_time":&lt;Integer_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ns_ip_address":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"port":&lt;Integer_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"monitor_name":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"server_name":&lt;String_value&gt;</font>}]}</p>
+</body>
+</html>

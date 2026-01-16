@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<link href="../../rdx/css/rdx.css" rel="stylesheet" type="text/css" />
+	<link href="../../index.css" rel="stylesheet" type="text/css" />
+	<title>tlmy_ns_device</title>
+</head>
+<body class="ns_body">
+<p class="ns_wp_header">tlmy_ns_device</p>
+<P>Configuration for The table maintained by telemetry insights module which has subset of managed_device table columns. resource.</P>
+<p class="heading">Read/write properties</p>
+	<p class="property_name">device_state<span class="property_type">&lt;String&gt;</span></p><p class="property_description">State of the device - Up/Down.</p>
+	<p class="property_name">last_seen<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">The time specified as epoch in seconds when the device was last seen by tlmy insights.</p>
+	<p class="property_name">device_version<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Version of the device.</p>
+	<p class="property_name">md_id<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Device Id from tenant's managed_device table.</p>
+	<p class="property_name">device_family<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Family of the device - NetScaler/SVM etc..</p>
+	<p class="property_name">device_ip<span class="property_type">&lt;String&gt;</span></p><p class="property_description">IP address of the device.</p>
+	<p class="property_name">agent_ip<span class="property_type">&lt;String&gt;</span></p><p class="property_description">IP address of the agent managing the device.</p>
+	<p class="property_name">org_id<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Org id to which the device belongs.</p>
+	<p class="property_name">managed_by<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Type of the agent managing the device.</p>
+	<p class="property_name">first_discovered<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">The time specified as epoch in seconds when the device was 1st seen by tlmy insights.</p>
+	<p class="property_name">agent_state<span class="property_type">&lt;String&gt;</span></p><p class="property_description">State of the agent managing the device.</p>
+	<p class="property_name">agent_version<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Version of the agent managing the device.</p>
+	<p class="property_name">id<span class="property_type">&lt;String&gt;</span></p><p class="property_description">.</p>
+	<p class="property_name">cc_id<span class="property_type">&lt;String&gt;</span></p><p class="property_description">CCID to which the device belongs; TODO: add UNIQUE (device_id, ccid) constraint through code/SQL.</p>
+<p class="heading">Operations</p><p class="property_name">NOTE: In request payload, Mandatory parameters are marked red and bold.<br /><br />The following parameters can be used in the nitro request :</p>
+<p class="property_name">onerror<span class=\"property_type\">&nbsp;&nbsp;&nbsp;&lt;String_value&gt;</span></p><p class="property_description"> Use this parameter to set the onerror status for nitro request. Applicable only for bulk requests.<br />Default value: EXIT<br />Possible values = EXIT, CONTINUE</p>
+</body>
+</html>

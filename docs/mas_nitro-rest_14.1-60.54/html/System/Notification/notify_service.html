@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<link href="../../../rdx/css/rdx.css" rel="stylesheet" type="text/css" />
+	<link href="../../../index.css" rel="stylesheet" type="text/css" />
+	<title>notify_service</title>
+</head>
+<body class="ns_body">
+<p class="ns_wp_header">notify_service</p>
+<P>Configuration for Notify Service resource.</P>
+<p class="heading">Read/write properties</p>
+	<p class="property_name">severity<span class="property_type">&lt;String&gt;</span></p><p class="property_description">EVENT_SEV_CRITICAL_HEX = #cf3434,EVENT_SEV_MAJOR_HEX = #ff9e47,EVENT_SEV_MINOR_HEX = #b2af45,EVENT_SEV_WARNING_HEX = #ffd71c,EVENT_SEV_CLEAR_HEX = #49bf62,EVENT_SEV_INFORMATION_HEX = #21a9ef,EVENT_SEV_ALERT_HEX= #ffd71c,EVENT_SEV_NOTICE_HEX= #ffd71c,EVENT_SEV_EMERG_HEX = #cf3434,EVENT_SEV_UNKNOWN_HEX = #999999,EVENT_SEV_ERROR_HEX = #cf3434.</p>
+	<p class="property_name">id<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Id is system generated key..</p>
+	<p class="property_name">email_subject<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Email Subject.</p>
+	<p class="property_name">servicenow_msg_body<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Service now message body.</p>
+	<p class="property_name">profile_name<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Profile name through which notifications will be sent..<br> Minimum length =  1<br> Maximum length =  128</p>
+	<p class="property_name">notification_type<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Notification type - email/slack/service-now/pager-duty.<br> Minimum length =  1<br> Maximum length =  128</p>
+	<p class="property_name">pagerduty_msg_body<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Pager Duty Message Body.</p>
+	<p class="property_name">slack_msg_body<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Slack message body.</p>
+	<p class="property_name">template_name<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Notification template name for different services..<br> Minimum length =  1<br> Maximum length =  128</p>
+	<p class="property_name">email_msg_body<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Email notification body.</p>
+	<p class="property_name">tenant_name<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Tenant name for which notification to be sent..<br> Minimum length =  1<br> Maximum length =  128</p>
+<p class="heading">Operations</p><p class="property_name">NOTE: In request payload, Mandatory parameters are marked red and bold.<br /><br />The following parameters can be used in the nitro request :</p>
+<p class="property_name">onerror<span class=\"property_type\">&nbsp;&nbsp;&nbsp;&lt;String_value&gt;</span></p><p class="property_description"> Use this parameter to set the onerror status for nitro request. Applicable only for bulk requests.<br />Default value: EXIT<br />Possible values = EXIT, CONTINUE</p>
+</body>
+</html>

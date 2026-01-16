@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<link href="../../rdx/css/rdx.css" rel="stylesheet" type="text/css" />
+	<link href="../../index.css" rel="stylesheet" type="text/css" />
+	<title>aa_web_anomaly_limits_l2</title>
+</head>
+<body class="ns_body">
+<p class="ns_wp_header">aa_web_anomaly_limits_l2</p>
+<P>Configuration for Temporary table for AA Web Anomaly IQR limits resource.</P>
+<p class="heading">Read/write properties</p>
+	<p class="property_name">apt_lower_lim<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">App Processing Time Lower Limit.</p>
+	<p class="property_name">spt_lower_lim<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">Server Processing Time Lower Limit.</p>
+	<p class="property_name">iqr_ctnsappname<span class="property_type">&lt;String&gt;</span></p><p class="property_description">AppName.<br> Maximum length =  255</p>
+	<p class="property_name">iqr_application_name<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Application Name.<br> Maximum length =  255</p>
+	<p class="property_name">snl_lower_lim<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">Server Network Latency Time Lower Limit.</p>
+	<p class="property_name">iqr_ip_address<span class="property_type">&lt;String&gt;</span></p><p class="property_description">IP Address.<br> Maximum length =  255</p>
+	<p class="property_name">cnl_lower_lim<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">Client Network Latency Time Lower Limit.</p>
+	<p class="property_name">cnl_upper_lim<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">Client Network Latency Time Upper Limit.</p>
+	<p class="property_name">snl_upper_lim<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">Server Network Latency Time Upper Limit.</p>
+	<p class="property_name">spt_upper_lim<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">Server Processing Time Upper Limit.</p>
+	<p class="property_name">apt_upper_lim<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">App Processing Time Upper Limit.</p>
+<p class="heading">Operations</p><p class="property_name">NOTE: In request payload, Mandatory parameters are marked red and bold.<br /><br />The following parameters can be used in the nitro request :</p>
+<p class="property_name">onerror<span class=\"property_type\">&nbsp;&nbsp;&nbsp;&lt;String_value&gt;</span></p><p class="property_description"> Use this parameter to set the onerror status for nitro request. Applicable only for bulk requests.<br />Default value: EXIT<br />Possible values = EXIT, CONTINUE</p><a href="#get_all" class="operation">get (all)</a><p class="heading"><a name="get_all">get (all)</a></p><p class="key">URL:<span class="url_value">https://&lt;MGMT-IP&gt;/nitro/v2/config/aa_web_anomaly_limits_l2</span></p><p class="key">Query-parameters:<span class="url_value"></span></p><p class="key">HTTPS Method:<span class="value">GET</span></p><p class="key">HTTPS Request Headers:</p><p class="key"><span class="value">Accept:<span class="value">application/json</span></span></p><p class="key"><span class="value">X-NITRO-USER:<span class="value">username_value&lt;String&gt;</span></span></p><p class="key"><span class="value">X-NITRO-PASS:<span class="value">password_value&lt;String&gt;</span></span></p><p class="key"><span class="value"><span class="value">or</span></span></p><p class="key"><span class="value">Cookie:<span class="value">NITRO_AUTH_TOKEN=token_value&lt;String&gt;</span></span></p><p class="key">Response:</p><p class="key"><span class="value">HTTPS Status Code on Success: 200 OK HTTPS Status Code on Failure: 4xx <string> (for general HTTPS errors) or 5xx <string> (for NetScaler-MAS-specific errors). The response payload provides details of the error</span></p><p class="key">Response Headers:</p><p class="key"><span class="value">Content-Type:<span class="value">application/json</span></span></p><p class="key">Response Payload:<span class="value">JSON</span></p><p class="payload">{ "errorcode": 0, "message": "Done", "severity": &ltString_value&gt, "aa_web_anomaly_limits_l2":[{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"apt_lower_lim":&lt;Double_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"spt_lower_lim":&lt;Double_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"iqr_ctnsappname":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"iqr_application_name":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"snl_lower_lim":&lt;Double_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"iqr_ip_address":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"cnl_lower_lim":&lt;Double_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"cnl_upper_lim":&lt;Double_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"snl_upper_lim":&lt;Double_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"spt_upper_lim":&lt;Double_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"apt_upper_lim":&lt;Double_value&gt;</font>}]}</p>
+</body>
+</html>

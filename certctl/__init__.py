@@ -1,6 +1,2 @@
-"""certctl package
+"""Core package for NetScaler Console certificate automation."""
 
-Lightweight package scaffold for Netscaler certificate tooling.
-"""
-
-__all__ = ["utils", "netscaler"]

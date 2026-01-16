@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<link href="../../../rdx/css/rdx.css" rel="stylesheet" type="text/css" />
+	<link href="../../../index.css" rel="stylesheet" type="text/css" />
+	<title>af_vserver_policy</title>
+</head>
+<body class="ns_body">
+<p class="ns_wp_header">af_vserver_policy</p>
+<P>Configuration for Virtual server Policy resource.</P>
+<p class="heading">Read/write properties</p>
+	<p class="property_name">__count<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">Number of records.</p>
+	<p class="property_name">id<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Id is type of policy rule.<br> Minimum length =  1<br> Maximum length =  64</p>
+	<p class="property_name">vserver_type<span class="property_type">&lt;String&gt;</span></p><p class="property_description">virtual server type.<br> Maximum length =  255</p>
+	<p class="property_name">servicetype<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Type of Service.</p>
+	<p class="property_name">policy_rule<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Policy rule.<br> Maximum length =  255</p>
+<p class="heading">Operations</p><p class="property_name">NOTE: In request payload, Mandatory parameters are marked red and bold.<br /><br />The following parameters can be used in the nitro request :</p>
+<p class="property_name">onerror<span class=\"property_type\">&nbsp;&nbsp;&nbsp;&lt;String_value&gt;</span></p><p class="property_description"> Use this parameter to set the onerror status for nitro request. Applicable only for bulk requests.<br />Default value: EXIT<br />Possible values = EXIT, CONTINUE</p><a href="#get_all" class="operation">get (all)</a><p class="heading"><a name="get_all">get (all)</a></p><p class="key">URL:<span class="url_value">https://&lt;MGMT-IP&gt;/nitro/v2/config/af_vserver_policy</span></p><p class="key">Query-parameters:<span class="url_value"></span></p><p class="key">HTTPS Method:<span class="value">GET</span></p><p class="key">HTTPS Request Headers:</p><p class="key"><span class="value">Accept:<span class="value">application/json</span></span></p><p class="key"><span class="value">X-NITRO-USER:<span class="value">username_value&lt;String&gt;</span></span></p><p class="key"><span class="value">X-NITRO-PASS:<span class="value">password_value&lt;String&gt;</span></span></p><p class="key"><span class="value"><span class="value">or</span></span></p><p class="key"><span class="value">Cookie:<span class="value">NITRO_AUTH_TOKEN=token_value&lt;String&gt;</span></span></p><p class="key">Response:</p><p class="key"><span class="value">HTTPS Status Code on Success: 200 OK HTTPS Status Code on Failure: 4xx <string> (for general HTTPS errors) or 5xx <string> (for NetScaler-MAS-specific errors). The response payload provides details of the error</span></p><p class="key">Response Headers:</p><p class="key"><span class="value">Content-Type:<span class="value">application/json</span></span></p><p class="key">Response Payload:<span class="value">JSON</span></p><p class="payload">{ "errorcode": 0, "message": "Done", "severity": &ltString_value&gt, "af_vserver_policy":[{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"__count":&lt;Double_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"id":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"vserver_type":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"servicetype":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"policy_rule":&lt;String_value&gt;</font>}]}</p>
+</body>
+</html>

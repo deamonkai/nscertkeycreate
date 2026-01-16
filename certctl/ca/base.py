@@ -1,13 +1,31 @@
-"""Base CA adapter interface."""
-from typing import Protocol, Optional
+"""CA adapter interfaces."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Optional
 
 
-class CAAdapter(Protocol):
-    def submit_csr(self, csr_pem: str, name: str, options: Optional[dict] = None) -> str:
-        """Submit a CSR and return a request id or token."""
+@dataclass
+class SubmitResult:
+    request_id: str
+    ca: str
 
-    def poll_status(self, request_id: str, timeout: int = 60) -> str:
-        """Poll request status and return a final state string (e.g., 'issued' / 'pending' / 'failed')."""
 
-    def download_certificate(self, request_id: str) -> str:
-        """Return the issued certificate PEM for the request_id."""
+@dataclass
+class CertStatus:
+    status: str
+    raw: dict
+
+
+class CAAdapter:
+    name: str
+
+    def submit_csr(self, csr_pem: str, **kwargs) -> SubmitResult:
+        raise NotImplementedError
+
+    def poll_status(self, request_id: str) -> CertStatus:
+        raise NotImplementedError
+
+    def collect_certificate(self, request_id: str, *, format_name: Optional[str] = None) -> str:
+        raise NotImplementedError

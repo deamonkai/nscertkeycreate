@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<link href="../../rdx/css/rdx.css" rel="stylesheet" type="text/css" />
+	<link href="../../index.css" rel="stylesheet" type="text/css" />
+	<title>filter_criteria</title>
+</head>
+<body class="ns_body">
+<p class="ns_wp_header">filter_criteria</p>
+<P>Configuration for event filter criteria properties resource.</P>
+<p class="heading">Read/write properties</p>
+	<p class="property_name">config_cmd<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Config Command if the event is generated for any config change in device.</p>
+	<p class="property_name">parent_id<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Id of the parent resource.</p>
+	<p class="property_name">device_family<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Family of device for which we have received the event.</p>
+	<p class="property_name">category<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Category of Event.<br> Maximum length =  10000</p>
+	<p class="property_name">parent_name<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Name of the parent resource.</p>
+	<p class="property_name">failureobj<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Failure objects are entity instances or counters for which an event has been generated.</p>
+	<p class="property_name">id<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Id is system generated key.</p>
+	<p class="property_name">cmd_auth_status<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Command Authorization Status if the event is generated for any config change or config save in device.</p>
+	<p class="property_name">severity<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Severity of Event.</p>
+	<p class="property_name">message<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Event Message.</p>
+	<p class="property_name">cmd_exec_status<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Command Execution Status if the event is generated for any config change or config save in device.</p>
+	<p class="property_name">source<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Source Ip Address of the device which sent the trap.</p>
+	<p class="property_name">category_array<span class="property_type">&lt;String[]&gt;</span></p><p class="property_description">Category list.</p>
+	<p class="property_name">source_array<span class="property_type">&lt;String[]&gt;</span></p><p class="property_description">Source list.</p>
+	<p class="property_name">failureobj_array<span class="property_type">&lt;String[]&gt;</span></p><p class="property_description">Failure Object list.</p>
+	<p class="property_name">severity_array<span class="property_type">&lt;String[]&gt;</span></p><p class="property_description">Severity list.</p>
+<p class="heading">Operations</p><p class="property_name">NOTE: In request payload, Mandatory parameters are marked red and bold.<br /><br />The following parameters can be used in the nitro request :</p>
+<p class="property_name">onerror<span class=\"property_type\">&nbsp;&nbsp;&nbsp;&lt;String_value&gt;</span></p><p class="property_description"> Use this parameter to set the onerror status for nitro request. Applicable only for bulk requests.<br />Default value: EXIT<br />Possible values = EXIT, CONTINUE</p>
+</body>
+</html>

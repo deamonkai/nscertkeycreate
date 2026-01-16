@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<link href="../../rdx/css/rdx.css" rel="stylesheet" type="text/css" />
+	<link href="../../index.css" rel="stylesheet" type="text/css" />
+	<title>af_vpn_app_l3</title>
+</head>
+<body class="ns_body">
+<p class="ns_wp_header">af_vpn_app_l3</p>
+<P>Configuration for AF VPN APP Report table for Level 3 resource.</P>
+<p class="heading">Read/write properties</p>
+	<p class="property_name">exporter_id<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">Exporter ID.</p>
+	<p class="property_name">city_name<span class="property_type">&lt;String&gt;</span></p><p class="property_description">City Name.<br> Maximum length =  128</p>
+	<p class="property_name">username<span class="property_type">&lt;String&gt;</span></p><p class="property_description">User Name..<br> Maximum length =  128</p>
+	<p class="property_name">vpn_fqdn<span class="property_type">&lt;String&gt;</span></p><p class="property_description">VIP FQDN.<br> Maximum length =  255</p>
+	<p class="property_name">ip_address<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Field to store the ip address as it is along with any extension.<br> Maximum length =  512</p>
+	<p class="property_name">longitude<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">Longitude.</p>
+	<p class="property_name">latitude<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">Latitude.</p>
+	<p class="property_name">vip_ipaddress<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">VIP Address.</p>
+	<p class="property_name">appname<span class="property_type">&lt;String&gt;</span></p><p class="property_description">AppName.<br> Maximum length =  255</p>
+	<p class="property_name">region_name<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Region Name.<br> Maximum length =  128</p>
+	<p class="property_name">session_id<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Session GUID..<br> Maximum length =  48</p>
+	<p class="property_name">total_bytes<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">Session total bytes.</p>
+	<p class="property_name">vip_ipaddress_str<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Field to store the VIP address as IP Address format.<br> Maximum length =  128</p>
+	<p class="property_name">rpt_sample_time<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">Report Sample time..</p>
+	<p class="property_name">app_count<span class="property_type">&lt;Integer&gt;</span></p><p class="property_description">App count..</p>
+	<p class="property_name">country_name<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Country Name.<br> Maximum length =  128</p>
+	<p class="property_name">ctnsappname<span class="property_type">&lt;String&gt;</span></p><p class="property_description">AppName.<br> Maximum length =  255</p>
+	<p class="property_name">app_type<span class="property_type">&lt;Integer&gt;</span></p><p class="property_description">App Type..</p>
+<p class="heading">Operations</p><p class="property_name">NOTE: In request payload, Mandatory parameters are marked red and bold.<br /><br />The following parameters can be used in the nitro request :</p>
+<p class="property_name">onerror<span class=\"property_type\">&nbsp;&nbsp;&nbsp;&lt;String_value&gt;</span></p><p class="property_description"> Use this parameter to set the onerror status for nitro request. Applicable only for bulk requests.<br />Default value: EXIT<br />Possible values = EXIT, CONTINUE</p><a href="#get_all" class="operation">get (all)</a><p class="heading"><a name="get_all">get (all)</a></p><p class="key">URL:<span class="url_value">https://&lt;MGMT-IP&gt;/nitro/v2/config/af_vpn_app_l3</span></p><p class="key">Query-parameters:<span class="url_value"></span></p><p class="key">HTTPS Method:<span class="value">GET</span></p><p class="key">HTTPS Request Headers:</p><p class="key"><span class="value">Accept:<span class="value">application/json</span></span></p><p class="key"><span class="value">X-NITRO-USER:<span class="value">username_value&lt;String&gt;</span></span></p><p class="key"><span class="value">X-NITRO-PASS:<span class="value">password_value&lt;String&gt;</span></span></p><p class="key"><span class="value"><span class="value">or</span></span></p><p class="key"><span class="value">Cookie:<span class="value">NITRO_AUTH_TOKEN=token_value&lt;String&gt;</span></span></p><p class="key">Response:</p><p class="key"><span class="value">HTTPS Status Code on Success: 200 OK HTTPS Status Code on Failure: 4xx <string> (for general HTTPS errors) or 5xx <string> (for NetScaler-MAS-specific errors). The response payload provides details of the error</span></p><p class="key">Response Headers:</p><p class="key"><span class="value">Content-Type:<span class="value">application/json</span></span></p><p class="key">Response Payload:<span class="value">JSON</span></p><p class="payload">{ "errorcode": 0, "message": "Done", "severity": &ltString_value&gt, "af_vpn_app_l3":[{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"exporter_id":&lt;Double_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"city_name":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"username":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"vpn_fqdn":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ip_address":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"longitude":&lt;Double_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"latitude":&lt;Double_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"vip_ipaddress":&lt;Double_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"appname":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"region_name":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"session_id":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"total_bytes":&lt;Double_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"vip_ipaddress_str":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"rpt_sample_time":&lt;Double_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"app_count":&lt;Integer_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"country_name":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ctnsappname":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"app_type":&lt;Integer_value&gt;</font>}]}</p>
+</body>
+</html>

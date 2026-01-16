@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<link href="../../rdx/css/rdx.css" rel="stylesheet" type="text/css" />
+	<link href="../../index.css" rel="stylesheet" type="text/css" />
+	<title>device_telemetry_status_summary</title>
+</head>
+<body class="ns_body">
+<p class="ns_wp_header">device_telemetry_status_summary</p>
+<P>Configuration for Telemetry summary per device resource.</P>
+<p class="heading">Read/write properties</p>
+	<p class="property_name">device_type<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Device type.</p>
+	<p class="property_name">ip_address<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Ip Address of the device.</p>
+	<p class="property_name">instance_state<span class="property_type">&lt;String&gt;</span></p><p class="property_description">State of the instance.</p>
+	<p class="property_name">telemetry_status<span class="property_type">&lt;Integer&gt;</span></p><p class="property_description">Status of telemetry collection. Returns 0 for success and non-zero for failure.</p>
+	<p class="property_name">error_details<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Details of the error if telemetry collection/SSH failed.</p>
+	<p class="property_name">ssh_state<span class="property_type">&lt;String&gt;</span></p><p class="property_description">State of SSH connection.</p>
+<p class="heading">Operations</p><p class="property_name">NOTE: In request payload, Mandatory parameters are marked red and bold.<br /><br />The following parameters can be used in the nitro request :</p>
+<p class="property_name">onerror<span class=\"property_type\">&nbsp;&nbsp;&nbsp;&lt;String_value&gt;</span></p><p class="property_description"> Use this parameter to set the onerror status for nitro request. Applicable only for bulk requests.<br />Default value: EXIT<br />Possible values = EXIT, CONTINUE</p>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "base_url": "https://regionsissuing/certsrv",
+  "username": "DOMAIN\\username",
+  "password": "example-password",
+  "template": ""
+}

@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<link href="../../rdx/css/rdx.css" rel="stylesheet" type="text/css" />
+	<link href="../../index.css" rel="stylesheet" type="text/css" />
+	<title>job_trigger</title>
+</head>
+<body class="ns_body">
+<p class="ns_wp_header">job_trigger</p>
+<P>Configuration for API used to trigger AppServer Job given Job Scheduler name resource.</P>
+<p class="heading">Read/write properties</p>
+	<p class="property_name">job_schedule_name<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Job Schedule Name.</p>
+	<p class="property_name">next_scheduletime<span class="property_type">&lt;Double&gt;</span></p><p class="property_description">Next Schedule Time.</p>
+	<p class="property_name">job_status<span class="property_type">&lt;String&gt;</span></p><p class="property_description">Job Status.</p>
+<p class="heading">Operations</p><p class="property_name">NOTE: In request payload, Mandatory parameters are marked red and bold.<br /><br />The following parameters can be used in the nitro request :</p>
+<p class="property_name">onerror<span class=\"property_type\">&nbsp;&nbsp;&nbsp;&lt;String_value&gt;</span></p><p class="property_description"> Use this parameter to set the onerror status for nitro request. Applicable only for bulk requests.<br />Default value: EXIT<br />Possible values = EXIT, CONTINUE</p><a href="#post" class="operation">post</a><p class="heading"><a name="post">post</a></p><p class="key">URL:<span class="url_value">https://&lt;MGMT-IP&gt;/nitro/v2/config/job_trigger?action=post&onerror=&lt;String_value&gt;</span></p><p class="key">HTTPS Method:<span class="value">POST</span></p><p class="key">Request Headers:</p><p class="key"><span class="value">Content-Type:<span class="value">application/json</span></span></p><p class="key"><span class="value">X-NITRO-USER:<span class="value">username_value&lt;String&gt;</span></span></p><p class="key"><span class="value">X-NITRO-PASS:<span class="value">password_value&lt;String&gt;</span></span></p><p class="key"><span class="value"><span class="value">or</span></span></p><p class="key"><span class="value">Cookie:<span class="value">NITRO_AUTH_TOKEN=token_value&lt;String&gt;</span></span></p><p class="key">Request Payload:<span class="value">JSON</span></p><p class="payload">{"job_trigger": {<br><font color=#000000>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"job_status":&lt;String_value&gt;</font>,<br><font color=#000000>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"job_schedule_name":&lt;String_value&gt;</font>,<br><font color=#000000>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"next_scheduletime":&lt;Double_value&gt;</font>}}</p><p class="key">Response:</p><p class="key"><span class="value">HTTPS Status Code on Success: 200 OK HTTPS Status Code on Failure: 4xx <string> (for general HTTPS errors) or 5xx <string> (for NetScaler-MAS-specific errors). The response payload provides details of the error</span></p><p class="key">Response Payload:<span class="value">JSON</span></p><p class="payload">{ "errorcode": 0, "message": "Done", "severity": &ltString_value&gt, "job_trigger":[{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"job_schedule_name":&lt;String_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"next_scheduletime":&lt;Double_value&gt;</font>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"job_status":&lt;String_value&gt;</font>}]}</p>
+</body>
+</html>

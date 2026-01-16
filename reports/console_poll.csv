@@ -1,0 +1,5 @@
+certkeypair_name,device_name,ns_ip_address,certkey_status,no_of_bound_entities,binding_count,binding_types,binding_devices,binding_entities,mapping_count,mapping_entity_types,mapping_instances,mapping_instance_ips,mapping_entities,days_to_expiry,valid_to,subject
+85aacd76-c1ad-e9df-2481-94e504526dd5,192.168.113.6,192.168.113.6,ACTIVE,0,0,,,,0,,,,,422,Mar 12 23:59:59 2027 GMT," C=US,O=Let&apos;s Encrypt,CN=E7"
+12d74eca-989d-90e1-7b2e-6d21c62b5368,192.168.113.6,192.168.113.6,ACTIVE,0,0,,,,0,,,,,89,Apr 14 22:06:37 2026 GMT, CN=*.molloyhome.net
+wildcard.molloyhome.net-RSA,192.168.113.6,192.168.113.6,Expired,2,0,,,,0,,,,,0,Jul 22 21:47:31 2024 GMT, CN=*.molloyhome.net
+wildcard.molloyhome.net,192.168.113.6,192.168.113.6,Expired,4,0,,,,0,,,,,0,Jul 18 15:27:02 2024 GMT, CN=*.molloyhome.net
