@@ -1,0 +1,8 @@
+var classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1certkey__chain__linkce2d82f5bb2d00c3abcb9423182d4771 =
+[
+    [ "__init__", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1certkey__chain__linkce2d82f5bb2d00c3abcb9423182d4771.html#a41f73edd4761149c5acef31ae9ea17a0", null ],
+    [ "certkey_chain_link", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1certkey__chain__linkce2d82f5bb2d00c3abcb9423182d4771.html#a4836e1f1a235402c735c4db7390fd4d3", null ],
+    [ "errorcode", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1certkey__chain__linkce2d82f5bb2d00c3abcb9423182d4771.html#a3249e18f6368951ecf5144d6c552738d", null ],
+    [ "message", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1certkey__chain__linkce2d82f5bb2d00c3abcb9423182d4771.html#ab8140947611504abcb64a4c277effcf5", null ],
+    [ "severity", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1certkey__chain__linkce2d82f5bb2d00c3abcb9423182d4771.html#ac43d617574d9fb283e14222f57084270", null ]
+];

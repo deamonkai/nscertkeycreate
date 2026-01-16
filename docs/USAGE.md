@@ -134,6 +134,12 @@ Filter by expiry window:
 python -m certctl.scripts.nsconsole_certpoll --console https://console.example --user nsroot --expires-within 30
 ```
 
+Filter by substring (name, subject, issuer, device, or IP):
+
+```bash
+python -m certctl.scripts.nsconsole_certpoll --console https://console.example --user nsroot --filter test.molloyhome.net
+```
+
 Write JSON output to a file and include unbound/inactive certs:
 
 ```bash
@@ -209,3 +215,67 @@ Write a subject rollup (JSON or CSV only):
 ```bash
 python -m certctl.scripts.nsconsole_certpoll_all --config ./certctl.json --format json --out-dir ./reports --rollup
 ```
+
+Deploy cert to ADCs via Console
+-------------------------------
+
+Deploy a certkey to the ADCs it is already bound to (from Console bindings):
+
+```bash
+python -m certctl.scripts.nsconsole_deploy --config ./certctl.json --profile prod --certkeypair example.com_20260101
+```
+
+If the cert is on the ADC but not yet visible in Console, trigger an inventory refresh:
+
+```bash
+python -m certctl.scripts.nsconsole_deploy --config ./certctl.json --profile prod --certkeypair example.com_20260101 --sync
+```
+
+If the cert is only on the ADC, import it via the Console proxy using a selected ADC:
+
+```bash
+python -m certctl.scripts.nsconsole_deploy --config ./certctl.json --profile prod --certkeypair example.com_20260101 \
+  --list-adc menu --import-missing
+```
+
+When the Console does not support `list_entity_cert`, the import step will try the ADC certkey name using the CN and a normalized underscore variant.
+
+If the cert is only on the ADC, you can also poll the selected ADCs before lookup:
+
+```bash
+python -m certctl.scripts.nsconsole_deploy --config ./certctl.json --profile prod --certkeypair example.com_20260101 --list-adc menu --poll-adc --poll-wait 5
+```
+
+List managed ADCs to JSON for later use:
+
+```bash
+python -m certctl.scripts.nsconsole_deploy --config ./certctl.json --profile prod --list-adc json --list-adc-out ./out/managed_devices.json
+```
+
+Include non-primary HA nodes in the listing:
+
+```bash
+python -m certctl.scripts.nsconsole_deploy --config ./certctl.json --profile prod --list-adc json --all-adc --list-adc-out ./out/managed_devices.json
+```
+
+Interactive ADC selection:
+
+```bash
+python -m certctl.scripts.nsconsole_deploy --config ./certctl.json --profile prod --list-adc menu --certkeypair example.com_20260101
+```
+
+Deploy using bindings from another certkeypair (for rotation):
+
+```bash
+python -m certctl.scripts.nsconsole_deploy --config ./certctl.json --profile prod --certkeypair example.com_20260101 \
+  --source-certkeypair example.com_20240101
+```
+
+Link CA certs (upload if missing, then link):
+
+```bash
+python -m certctl.scripts.nsconsole_deploy --config ./certctl.json --profile prod --certkeypair example.com_20260101 \
+  --ca-certkey myroot_ca --ca-cert-file ./out/root.pem --ca-certkey myintermediate_ca --ca-cert-file ./out/intermediate.pem
+```
+
+If no `--ca-certkey` values are provided, the script will attempt to link any CA certs found in the source cert's chain metadata.

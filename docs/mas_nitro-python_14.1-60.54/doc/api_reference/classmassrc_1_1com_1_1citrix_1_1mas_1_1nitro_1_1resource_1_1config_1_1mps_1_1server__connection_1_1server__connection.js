@@ -1,0 +1,27 @@
+var classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection =
+[
+    [ "count", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#af08bb2bfb9d6abe4c0beefefaa6f94b6", null ],
+    [ "count", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#a118bd68e2e6711aef480ce5d470f25d7", null ],
+    [ "file_component_value", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#aef9f5651e1fe3901e8e786a00327f735", null ],
+    [ "file_path_value", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#a228470962d5ee7dd6b328c17e6338281", null ],
+    [ "get_nitro_bulk_response", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#a1ecd83ef85666a243500fb4939686572", null ],
+    [ "get_nitro_response", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#a14c2d1866b2fdaaac793bf9f16451bcb", null ],
+    [ "get_object_id", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#aa91ff01b4a749cfdb6a7d9ad6af50c0c", null ],
+    [ "get_object_type", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#ae5400af3b60413efbb6ecb215d0d3c46", null ],
+    [ "get_resource_id", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#abd7b75259645e4fa05b15255a20fb382", null ],
+    [ "latitude", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#a581cca3058cd1c4cbe807467e0b64520", null ],
+    [ "latitude", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#a039a51bbf2447267a87c5d9680598fdd", null ],
+    [ "longitude", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#ab8e8dc382ad464363087fa3436f9c401", null ],
+    [ "longitude", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#aeae563008c1079780fe13af1bfd9f0e2", null ],
+    [ "server_rtt", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#ac359294dd4a4fcdcba7abe1e851ec06e", null ],
+    [ "server_rtt", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#aaa93c43ddd7411abafa2961b96a5772b", null ],
+    [ "validate", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#a885cfb7c695166fd92d5a55239bcb465", null ],
+    [ "_count", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#a2ac93cc905aee80678cea1afb9abce29", null ],
+    [ "_count", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#a69c4cff6b9a1cd95c71fc56b8dd9a983", null ],
+    [ "_latitude", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#aaabfdfb69fccbf67861231d0c26fc145", null ],
+    [ "_latitude", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#a7212e348382df5a1ba877ab1ee9d9c58", null ],
+    [ "_longitude", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#a220af9800ba4957c2f815a51ee1dc60b", null ],
+    [ "_longitude", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#a37fa8c0723d5f1020e2db9fd59fe5c5e", null ],
+    [ "_server_rtt", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#a467bb46ad37a7ed3a0e409e849c99aa2", null ],
+    [ "_server_rtt", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1server__connection_1_1server__connection.html#a1bfc2ef0106d675e950867e5619488e6", null ]
+];

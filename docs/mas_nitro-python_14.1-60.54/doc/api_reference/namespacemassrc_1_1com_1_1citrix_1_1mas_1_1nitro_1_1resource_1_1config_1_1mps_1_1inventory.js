@@ -1,0 +1,6 @@
+var namespacemassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1inventory =
+[
+    [ "inventory", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1inventory_1_1inventory.html", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1inventory_1_1inventory" ],
+    [ "inventory_response", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1inventory_1_1inventory__response.html", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1inventory_1_1inventory__response" ],
+    [ "inventory_responses", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1inventory_1_1inventory__responses.html", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1inventory_1_1inventory__responses" ]
+];

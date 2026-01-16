@@ -1,0 +1,6 @@
+var namespacemassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1uri =
+[
+    [ "uri", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1uri_1_1uri.html", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1uri_1_1uri" ],
+    [ "uri_response", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1uri_1_1uri__response.html", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1uri_1_1uri__response" ],
+    [ "uri_responses", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1uri_1_1uri__responses.html", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1uri_1_1uri__responses" ]
+];

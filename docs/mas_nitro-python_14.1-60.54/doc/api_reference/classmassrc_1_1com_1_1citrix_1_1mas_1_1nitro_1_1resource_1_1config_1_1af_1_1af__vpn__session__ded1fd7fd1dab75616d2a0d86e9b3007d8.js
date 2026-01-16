@@ -1,0 +1,7 @@
+var classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__vpn__session__ded1fd7fd1dab75616d2a0d86e9b3007d8 =
+[
+    [ "__init__", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__vpn__session__ded1fd7fd1dab75616d2a0d86e9b3007d8.html#a41f73edd4761149c5acef31ae9ea17a0", null ],
+    [ "af_vpn_session_details_l4_response_array", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__vpn__session__ded1fd7fd1dab75616d2a0d86e9b3007d8.html#afed7e78418190f6676c33f36c004a056", null ],
+    [ "errorcode", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__vpn__session__ded1fd7fd1dab75616d2a0d86e9b3007d8.html#a3249e18f6368951ecf5144d6c552738d", null ],
+    [ "message", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__vpn__session__ded1fd7fd1dab75616d2a0d86e9b3007d8.html#ab8140947611504abcb64a4c277effcf5", null ]
+];

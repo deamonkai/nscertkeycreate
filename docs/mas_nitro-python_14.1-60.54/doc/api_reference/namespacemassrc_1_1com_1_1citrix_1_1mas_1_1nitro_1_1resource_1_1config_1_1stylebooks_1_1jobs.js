@@ -1,0 +1,6 @@
+var namespacemassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1stylebooks_1_1jobs =
+[
+    [ "jobs", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1stylebooks_1_1jobs_1_1jobs.html", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1stylebooks_1_1jobs_1_1jobs" ],
+    [ "jobs_response", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1stylebooks_1_1jobs_1_1jobs__response.html", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1stylebooks_1_1jobs_1_1jobs__response" ],
+    [ "jobs_responses", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1stylebooks_1_1jobs_1_1jobs__responses.html", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1stylebooks_1_1jobs_1_1jobs__responses" ]
+];

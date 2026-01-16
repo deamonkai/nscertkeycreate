@@ -1,0 +1,32 @@
+@echo off
+
+python add_mps_ssl_certkey.py %*
+python add_ntp_server.py %*
+python add_snmp_view.py %*
+python config_job.py %*
+python external_auth.py %*
+python get_inventory.py %*
+python get_license_file.py %*
+python get_ns_device_profile.py %*
+python get_ns_ns_running_config.py %*
+python get_nssdx.py %*
+python get_snmp_manager.py %*
+python get_snmp_trap.py %*
+python get_stylebooks.py %*
+python get_system_settings.py %*
+python get_techsupport.py %*
+python get_traceroute.py %*
+python getcount_docker_host.py %*
+python managed_device.py %*
+python modify_ns_lbvserver.py %*
+python mps_data_center.py %*
+python mps_group.py %*
+python mps_user.py %*
+python notifications.py %*
+python poll_ns_ssl_certkey_policy.py %*
+python reboot_ns.py %*
+python system_session.py %*
+python system_version.py %*
+python track_activity.py %*
+python update_prune_policy.py %*
+python upload_ns_ssl_cert.py %*

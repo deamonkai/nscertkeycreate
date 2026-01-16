@@ -1,0 +1,8 @@
+var classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1waf__profile__devicfcbcc7653423b36f743f1e51a8b4ff6f =
+[
+    [ "__init__", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1waf__profile__devicfcbcc7653423b36f743f1e51a8b4ff6f.html#a41f73edd4761149c5acef31ae9ea17a0", null ],
+    [ "errorcode", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1waf__profile__devicfcbcc7653423b36f743f1e51a8b4ff6f.html#a3249e18f6368951ecf5144d6c552738d", null ],
+    [ "message", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1waf__profile__devicfcbcc7653423b36f743f1e51a8b4ff6f.html#ab8140947611504abcb64a4c277effcf5", null ],
+    [ "severity", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1waf__profile__devicfcbcc7653423b36f743f1e51a8b4ff6f.html#ac43d617574d9fb283e14222f57084270", null ],
+    [ "waf_profile_devices", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1waf__profile__devicfcbcc7653423b36f743f1e51a8b4ff6f.html#a972e2badec15c98bc35a58302e0f965e", null ]
+];

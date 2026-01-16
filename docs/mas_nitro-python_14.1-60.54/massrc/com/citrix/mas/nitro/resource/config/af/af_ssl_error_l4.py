@@ -1,0 +1,510 @@
+'''
+Copyright (c) 2008-2020 Citrix Systems, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+'''
+
+
+from massrc.com.citrix.mas.nitro.resource.Base import *
+from massrc.com.citrix.mas.nitro.service.options import options
+from massrc.com.citrix.mas.nitro.exception.nitro_exception import nitro_exception
+from massrc.com.citrix.mas.nitro.util.filtervalue import filtervalue
+from massrc.com.citrix.mas.nitro.resource.Base.base_resource import base_resource
+from massrc.com.citrix.mas.nitro.resource.Base.base_response import base_response
+
+
+'''
+Configuration for AF SSL ERROR Report table for Level 4 resource
+'''
+
+class af_ssl_error_l4(base_resource):
+	_rpt_sample_time= ""
+	_total_requests= ""
+	_application_name= ""
+	_ip_address= ""
+	_mismatchciphers= ""
+	_vservername= ""
+	_isfrontend= ""
+	_exporter_id= ""
+	_stnssource_ip_address= ""
+	_handshakemsg= ""
+	_unsupportedciphers= ""
+	_ctnssource_ip_address= ""
+	_ctnsappname= ""
+	__count=""
+
+	'''
+	get the resource type
+	'''
+	def get_object_type(self) :
+		try:
+			return "af_ssl_error_l4"
+		except Exception as e :
+			raise e
+
+	'''
+	Returns the value of object identifier argument.
+	'''
+	def get_object_id(self) :
+		try:
+			return None
+		except Exception as e :
+			raise e
+
+	'''
+	Returns the value of object file path argument.
+	'''
+	@property
+	def file_path_value(self) :
+		try:
+			return None
+		except Exception as e :
+			raise e
+
+	'''
+	Returns the value of object file component name.
+	'''
+	@property
+	def file_component_value(self) :
+		try :
+			return "af_ssl_error_l4s"
+		except Exception as e :
+			raise e
+
+
+
+	'''
+	get Report Sample time.
+	'''
+	@property
+	def rpt_sample_time(self) :
+		try:
+			return self._rpt_sample_time
+		except Exception as e :
+			raise e
+	'''
+	set Report Sample time.
+	'''
+	@rpt_sample_time.setter
+	def rpt_sample_time(self,rpt_sample_time):
+		try :
+			if not isinstance(rpt_sample_time,long):
+				raise TypeError("rpt_sample_time must be set to long value")
+			self._rpt_sample_time = rpt_sample_time
+		except Exception as e :
+			raise e
+
+
+	'''
+	get Count of this URL in given sampled timeframe.
+	'''
+	@property
+	def total_requests(self) :
+		try:
+			return self._total_requests
+		except Exception as e :
+			raise e
+	'''
+	set Count of this URL in given sampled timeframe.
+	'''
+	@total_requests.setter
+	def total_requests(self,total_requests):
+		try :
+			if not isinstance(total_requests,long):
+				raise TypeError("total_requests must be set to long value")
+			self._total_requests = total_requests
+		except Exception as e :
+			raise e
+
+
+	'''
+	get Application Name
+	'''
+	@property
+	def application_name(self) :
+		try:
+			return self._application_name
+		except Exception as e :
+			raise e
+	'''
+	set Application Name
+	'''
+	@application_name.setter
+	def application_name(self,application_name):
+		try :
+			if not isinstance(application_name,str):
+				raise TypeError("application_name must be set to str value")
+			self._application_name = application_name
+		except Exception as e :
+			raise e
+
+
+	'''
+	get Field to store the ip address as it is along with any extension
+	'''
+	@property
+	def ip_address(self) :
+		try:
+			return self._ip_address
+		except Exception as e :
+			raise e
+	'''
+	set Field to store the ip address as it is along with any extension
+	'''
+	@ip_address.setter
+	def ip_address(self,ip_address):
+		try :
+			if not isinstance(ip_address,str):
+				raise TypeError("ip_address must be set to str value")
+			self._ip_address = ip_address
+		except Exception as e :
+			raise e
+
+
+	'''
+	get Mismatch Cipher
+	'''
+	@property
+	def mismatchciphers(self) :
+		try:
+			return self._mismatchciphers
+		except Exception as e :
+			raise e
+	'''
+	set Mismatch Cipher
+	'''
+	@mismatchciphers.setter
+	def mismatchciphers(self,mismatchciphers):
+		try :
+			if not isinstance(mismatchciphers,str):
+				raise TypeError("mismatchciphers must be set to str value")
+			self._mismatchciphers = mismatchciphers
+		except Exception as e :
+			raise e
+
+
+	'''
+	get Backend Vserver
+	'''
+	@property
+	def vservername(self) :
+		try:
+			return self._vservername
+		except Exception as e :
+			raise e
+	'''
+	set Backend Vserver
+	'''
+	@vservername.setter
+	def vservername(self,vservername):
+		try :
+			if not isinstance(vservername,str):
+				raise TypeError("vservername must be set to str value")
+			self._vservername = vservername
+		except Exception as e :
+			raise e
+
+
+	'''
+	get isfrontend.
+	'''
+	@property
+	def isfrontend(self) :
+		try:
+			return self._isfrontend
+		except Exception as e :
+			raise e
+	'''
+	set isfrontend.
+	'''
+	@isfrontend.setter
+	def isfrontend(self,isfrontend):
+		try :
+			if not isinstance(isfrontend,int):
+				raise TypeError("isfrontend must be set to int value")
+			self._isfrontend = isfrontend
+		except Exception as e :
+			raise e
+
+
+	'''
+	get Exporter ID
+	'''
+	@property
+	def exporter_id(self) :
+		try:
+			return self._exporter_id
+		except Exception as e :
+			raise e
+	'''
+	set Exporter ID
+	'''
+	@exporter_id.setter
+	def exporter_id(self,exporter_id):
+		try :
+			if not isinstance(exporter_id,long):
+				raise TypeError("exporter_id must be set to long value")
+			self._exporter_id = exporter_id
+		except Exception as e :
+			raise e
+
+
+	'''
+	get Server Source IP Address
+	'''
+	@property
+	def stnssource_ip_address(self) :
+		try:
+			return self._stnssource_ip_address
+		except Exception as e :
+			raise e
+	'''
+	set Server Source IP Address
+	'''
+	@stnssource_ip_address.setter
+	def stnssource_ip_address(self,stnssource_ip_address):
+		try :
+			if not isinstance(stnssource_ip_address,long):
+				raise TypeError("stnssource_ip_address must be set to long value")
+			self._stnssource_ip_address = stnssource_ip_address
+		except Exception as e :
+			raise e
+
+
+	'''
+	get HandShake Message.
+	'''
+	@property
+	def handshakemsg(self) :
+		try:
+			return self._handshakemsg
+		except Exception as e :
+			raise e
+	'''
+	set HandShake Message.
+	'''
+	@handshakemsg.setter
+	def handshakemsg(self,handshakemsg):
+		try :
+			if not isinstance(handshakemsg,long):
+				raise TypeError("handshakemsg must be set to long value")
+			self._handshakemsg = handshakemsg
+		except Exception as e :
+			raise e
+
+
+	'''
+	get Unsupported Cipher
+	'''
+	@property
+	def unsupportedciphers(self) :
+		try:
+			return self._unsupportedciphers
+		except Exception as e :
+			raise e
+	'''
+	set Unsupported Cipher
+	'''
+	@unsupportedciphers.setter
+	def unsupportedciphers(self,unsupportedciphers):
+		try :
+			if not isinstance(unsupportedciphers,str):
+				raise TypeError("unsupportedciphers must be set to str value")
+			self._unsupportedciphers = unsupportedciphers
+		except Exception as e :
+			raise e
+
+
+	'''
+	get Client Source IP Address
+	'''
+	@property
+	def ctnssource_ip_address(self) :
+		try:
+			return self._ctnssource_ip_address
+		except Exception as e :
+			raise e
+	'''
+	set Client Source IP Address
+	'''
+	@ctnssource_ip_address.setter
+	def ctnssource_ip_address(self,ctnssource_ip_address):
+		try :
+			if not isinstance(ctnssource_ip_address,long):
+				raise TypeError("ctnssource_ip_address must be set to long value")
+			self._ctnssource_ip_address = ctnssource_ip_address
+		except Exception as e :
+			raise e
+
+
+	'''
+	get AppName
+	'''
+	@property
+	def ctnsappname(self) :
+		try:
+			return self._ctnsappname
+		except Exception as e :
+			raise e
+	'''
+	set AppName
+	'''
+	@ctnsappname.setter
+	def ctnsappname(self,ctnsappname):
+		try :
+			if not isinstance(ctnsappname,str):
+				raise TypeError("ctnsappname must be set to str value")
+			self._ctnsappname = ctnsappname
+		except Exception as e :
+			raise e
+
+	'''
+	Af Report for Top SSL ERROR being Count Managed by this AF Collector.
+	'''
+	@classmethod
+	def get(cls,client = None,resource="",option_=""): 
+		try:
+			response=""
+			if not resource :
+				af_ssl_error_l4_obj=af_ssl_error_l4()
+				response = af_ssl_error_l4_obj.get_resources(client,option_)
+			else:
+				response = resource.get_resource(client, option_)
+			return response
+		except Exception as e :
+			raise e
+
+	'''
+	Use this API to fetch filtered set of af_ssl_error_l4 resources.
+	filter string should be in JSON format.eg: "vm_state:DOWN,name:[a-z]+"
+	'''
+	@classmethod
+	def get_filtered(cls,service,filter_) :
+		try:
+			af_ssl_error_l4_obj = af_ssl_error_l4()
+			option_ = options()
+			option_._filter=filter_
+			return af_ssl_error_l4_obj.getfiltered(service, option_)
+		except Exception as e :
+			raise e
+
+	'''
+	* Use this API to count the af_ssl_error_l4 resources configured on NetScaler SDX.
+	'''
+	@classmethod
+	def count(cls,service) :
+		try:
+			af_ssl_error_l4_obj = af_ssl_error_l4()
+			option_ = options()
+			option_._count=True
+			response = af_ssl_error_l4_obj.get_resources(service, option_)
+			if response :
+				return response[0].__dict__['__count']
+			return 0
+		except Exception as e :
+			raise e
+
+	'''
+	Use this API to count the filtered set of af_ssl_error_l4 resources.
+	filter string should be in JSON format.eg: "vm_state:DOWN,name:[a-z]+"
+	'''
+	@classmethod
+	def count_filtered(cls,service,filter_):
+		try:
+			af_ssl_error_l4_obj = af_ssl_error_l4()
+			option_ = options()
+			option_._count=True
+			option_._filter=filter_
+			response = af_ssl_error_l4_obj.getfiltered(service, option_)
+			if response :
+				return response[0].__dict__['__count']
+			return 0;
+		except Exception as e :
+			raise e
+
+	'''
+	Converts API response into object and returns the object array in case of get request.
+	'''
+	def get_nitro_response(self,service ,response):
+		try :
+			result=service.payload_formatter.string_to_resource(af_ssl_error_l4_response, response, self.__class__.__name__)
+			if(result.errorcode != 0) :
+				if (result.errorcode == 444) :
+					service.clear_session(self)
+				if result.severity :
+					if (result.severity == "ERROR") :
+						raise nitro_exception(result.errorcode, str(result.message), str(result.severity))
+				else :
+					raise nitro_exception(result.errorcode, str(result.message), str(result.severity))
+			return result.af_ssl_error_l4
+		except Exception as e :
+			raise e
+
+
+	'''
+	Converts API response into object and returns the object array .
+	'''
+	def get_nitro_bulk_response(self,service ,response):
+		try :
+			result=service.payload_formatter.string_to_resource(af_ssl_error_l4_responses, response, "af_ssl_error_l4_response_array")
+			if(result.errorcode != 0) :
+				if (result.errorcode == 444) :
+					service.clear_session(self)
+				response = result.af_ssl_error_l4_response_array
+				i=0
+				error = [af_ssl_error_l4() for _ in range(len(response))]
+				for obj in response :
+					error[i]= obj._message
+					i=i+1
+				raise nitro_exception(result.errorcode, str(result.message), error)
+			response = result.af_ssl_error_l4_response_array
+			i=0
+			af_ssl_error_l4_objs = [af_ssl_error_l4() for _ in range(len(response))]
+			for obj in response :
+				for props in obj._af_ssl_error_l4:
+					result = service.payload_formatter.string_to_bulk_resource(af_ssl_error_l4_response,self.__class__.__name__,props)
+					af_ssl_error_l4_objs[i] = result.af_ssl_error_l4
+					i=i+1
+			return af_ssl_error_l4_objs
+		except Exception as e :
+			raise e
+
+
+	'''
+	Performs generic data validation for the operation to be performed
+	'''
+	def validate(self,operationType):
+		try:
+			super(af_ssl_error_l4,self).validate()
+		except Exception as e :
+			raise e
+
+'''
+Forms the proper response.
+'''
+class af_ssl_error_l4_response(base_response):
+	def __init__(self,length=1) :
+		self.af_ssl_error_l4= []
+		self.errorcode = 0 
+		self.message = "" 
+		self.severity = "" 
+		self.af_ssl_error_l4= [ af_ssl_error_l4() for _ in range(length)]
+'''
+Forms the proper response for bulk operation.
+'''
+class af_ssl_error_l4_responses(base_response):
+	def __init__(self,length=1) :
+		self.af_ssl_error_l4_response_array = []
+		self.errorcode = 0 
+		self.message = "" 
+		self.af_ssl_error_l4_response_array = [ af_ssl_error_l4() for _ in range(length)]

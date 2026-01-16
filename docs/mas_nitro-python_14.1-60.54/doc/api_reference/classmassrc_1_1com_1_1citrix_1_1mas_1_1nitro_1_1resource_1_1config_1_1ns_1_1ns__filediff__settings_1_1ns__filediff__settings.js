@@ -1,0 +1,26 @@
+var classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings =
+[
+    [ "count", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#a02b939f3c546d5f316bace20ecbefc17", null ],
+    [ "count_filtered", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#a5bb55762daeb92c4abd8e5d7757ab84b", null ],
+    [ "file_component_value", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#aef9f5651e1fe3901e8e786a00327f735", null ],
+    [ "file_path_value", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#a228470962d5ee7dd6b328c17e6338281", null ],
+    [ "get", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#aa8886e6d47a615e82967a23ec7560cde", null ],
+    [ "get_filtered", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#aa88537c0b78de01ec1c4d5a856dd4bcc", null ],
+    [ "get_nitro_bulk_response", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#a1ecd83ef85666a243500fb4939686572", null ],
+    [ "get_nitro_response", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#a14c2d1866b2fdaaac793bf9f16451bcb", null ],
+    [ "get_object_id", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#aa91ff01b4a749cfdb6a7d9ad6af50c0c", null ],
+    [ "get_object_type", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#ae5400af3b60413efbb6ecb215d0d3c46", null ],
+    [ "get_resource_id", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#abd7b75259645e4fa05b15255a20fb382", null ],
+    [ "mail_profile", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#a4283261d44215d755eea49de006c3ff2", null ],
+    [ "mail_profile", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#aeda60a0a52ac15752d719fb5fd7ccf54", null ],
+    [ "modify", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#addc71c48899399ffcfd822f04af52d18", null ],
+    [ "slack_profile", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#afdefbe9f454bba24cc9d5a4ab353e62d", null ],
+    [ "slack_profile", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#a1e4f6454e66592f2fb322f04f6c19de5", null ],
+    [ "validate", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#a885cfb7c695166fd92d5a55239bcb465", null ],
+    [ "_mail_profile", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#ae1851eefe5efef429a41fe7a98e9b3d2", null ],
+    [ "_mail_profile", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#a09e4bb36c34b713d3caa9da5a0a68ac6", null ],
+    [ "_op_by_primary_key_name", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#a6f9f3676783df271c50d4919a962b058", null ],
+    [ "_slack_profile", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#a07c6455b64939a2e6649d4b2bbb4140e", null ],
+    [ "_slack_profile", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#afd108095f707b02f1902168686f9eb25", null ],
+    [ "_url_filter", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__filediff__settings_1_1ns__filediff__settings.html#af75e25ae2f1b818112850de42ce97e53", null ]
+];

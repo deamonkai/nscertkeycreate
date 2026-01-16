@@ -1,0 +1,8 @@
+var classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__threat__data__l40eeda6d309c0cd175efa703ea99ce6af =
+[
+    [ "__init__", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__threat__data__l40eeda6d309c0cd175efa703ea99ce6af.html#a41f73edd4761149c5acef31ae9ea17a0", null ],
+    [ "af_threat_data_l4", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__threat__data__l40eeda6d309c0cd175efa703ea99ce6af.html#a29d3ff437d430e856f0ae9d12d2894eb", null ],
+    [ "errorcode", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__threat__data__l40eeda6d309c0cd175efa703ea99ce6af.html#a3249e18f6368951ecf5144d6c552738d", null ],
+    [ "message", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__threat__data__l40eeda6d309c0cd175efa703ea99ce6af.html#ab8140947611504abcb64a4c277effcf5", null ],
+    [ "severity", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__threat__data__l40eeda6d309c0cd175efa703ea99ce6af.html#ac43d617574d9fb283e14222f57084270", null ]
+];

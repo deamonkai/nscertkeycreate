@@ -64,6 +64,7 @@ def _extract_row(item: Dict[str, Any], mapping_index: Dict[str, List[Dict[str, A
         "ns_ip_address": item.get("ns_ip_address") or "",
         "subject": item.get("subject") or "",
         "issuer": item.get("issuer") or item.get("issuer_cn") or "",
+        "certificate_dn": item.get("certificate_dn") or "",
         "valid_from": item.get("valid_from") or "",
         "valid_to": item.get("valid_to") or "",
         "days_to_expiry": item.get("days_to_expiry") or "",
@@ -208,7 +209,24 @@ def _apply_config(args: argparse.Namespace) -> argparse.Namespace:
     args.inventory = bool(pick("inventory", args.inventory, False))
     args.include_mappings = bool(pick("include_mappings", args.include_mappings, False))
     args.expires_within = pick("expires_within", args.expires_within)
+    args.filter = pick("filter", args.filter)
     return args
+
+
+def _matches_filter(item: Dict[str, Any], needle: str) -> bool:
+    hay_fields = [
+        item.get("certkeypair_name"),
+        item.get("subject"),
+        item.get("certificate_dn"),
+        item.get("issuer"),
+        item.get("issuer_cn"),
+        item.get("device_name"),
+        item.get("display_name"),
+        item.get("hostname"),
+        item.get("ns_ip_address"),
+    ]
+    haystack = " ".join(str(value) for value in hay_fields if value)
+    return needle.lower() in haystack.lower()
 
 
 def run(args: argparse.Namespace) -> int:
@@ -227,6 +245,8 @@ def run(args: argparse.Namespace) -> int:
         args.include_mappings = False
     if args.expires_within is None:
         args.expires_within = None
+    if args.filter is None:
+        args.filter = None
     if not args.console or not args.user:
         raise SystemExit("Console URL and user are required (use CLI args or --config/--profile).")
     verify: Any
@@ -250,6 +270,8 @@ def run(args: argparse.Namespace) -> int:
 
     payload = client.get_json("/nitro/v2/config/ns_ssl_certkey")
     items = _normalize_items(payload)
+    if args.filter:
+        items = [item for item in items if _matches_filter(item, args.filter)]
 
     mapping_index: Dict[str, List[Dict[str, Any]]] = {}
     if args.include_mappings:
@@ -293,6 +315,7 @@ def run(args: argparse.Namespace) -> int:
         "days_to_expiry",
         "valid_to",
         "subject",
+        "certificate_dn",
     ]
 
     report: Optional[Dict[str, Any]] = None
@@ -369,6 +392,10 @@ def build_arg_parser() -> argparse.ArgumentParser:
         type=int,
         default=None,
         help="Only include certs expiring within N days",
+    )
+    parser.add_argument(
+        "--filter",
+        help="Filter by substring match (name, subject, issuer, device, or IP)",
     )
     return parser
 

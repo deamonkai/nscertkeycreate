@@ -1,0 +1,7 @@
+var classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__config__replicat973fc0352791c4578e0b952a8d7d5b9d =
+[
+    [ "__init__", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__config__replicat973fc0352791c4578e0b952a8d7d5b9d.html#a41f73edd4761149c5acef31ae9ea17a0", null ],
+    [ "errorcode", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__config__replicat973fc0352791c4578e0b952a8d7d5b9d.html#a3249e18f6368951ecf5144d6c552738d", null ],
+    [ "message", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__config__replicat973fc0352791c4578e0b952a8d7d5b9d.html#ab8140947611504abcb64a4c277effcf5", null ],
+    [ "ns_config_replicate_response_array", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1ns_1_1ns__config__replicat973fc0352791c4578e0b952a8d7d5b9d.html#a840669a437217adebc6e207e79c42c5b", null ]
+];

@@ -1,0 +1,7 @@
+var classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__vpn__error__repo11ddc323d91e1631379b50f349d42024 =
+[
+    [ "__init__", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__vpn__error__repo11ddc323d91e1631379b50f349d42024.html#a41f73edd4761149c5acef31ae9ea17a0", null ],
+    [ "af_vpn_error_reports_l2_response_array", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__vpn__error__repo11ddc323d91e1631379b50f349d42024.html#a9f9e7fc1b39dda0cfe0d6111ee3a6880", null ],
+    [ "errorcode", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__vpn__error__repo11ddc323d91e1631379b50f349d42024.html#a3249e18f6368951ecf5144d6c552738d", null ],
+    [ "message", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__vpn__error__repo11ddc323d91e1631379b50f349d42024.html#ab8140947611504abcb64a4c277effcf5", null ]
+];

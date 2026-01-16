@@ -18,3 +18,7 @@ python -m pytest -q
 ```
 
 Current work: NetScaler Console polling + key/CSR scripts with tests.
+
+Note: The NetScaler Console Device API proxy (`authorize_deviceapiproxy` and
+`enable_apiproxy_credentials`) is disabled by default. We enabled it on the
+lab Console to support future Console-proxy import workflows.

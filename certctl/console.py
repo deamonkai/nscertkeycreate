@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, Optional, Union
 
 import requests
+from urllib3.exceptions import InsecureRequestWarning
 
 VerifyType = Union[bool, str]
 
@@ -25,6 +26,10 @@ class NitroConsoleClient:
     verify: VerifyType
     token: Optional[str] = None
     timeout: int = 60
+
+    def __post_init__(self) -> None:
+        if self.verify is False:
+            requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)  # type: ignore[attr-defined]
 
     def _url(self, path: str) -> str:
         return self.base.rstrip("/") + path
@@ -101,6 +106,17 @@ class NitroConsoleClient:
             url,
             headers=self._headers({"Content-Type": "application/json", "Accept": "application/json"}),
             params=params,
+            json=payload,
+            verify=self.verify,
+            timeout=self.timeout,
+        )
+        return self._parse_json(resp)
+
+    def put_json(self, path: str, payload: Dict[str, Any]) -> Dict[str, Any]:
+        url = self._url(path)
+        resp = requests.put(
+            url,
+            headers=self._headers({"Content-Type": "application/json", "Accept": "application/json"}),
             json=payload,
             verify=self.verify,
             timeout=self.timeout,

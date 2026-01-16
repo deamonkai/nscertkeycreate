@@ -1,0 +1,6 @@
+var namespacemassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1sdx_1_1vpx__info =
+[
+    [ "vpx_info", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1sdx_1_1vpx__info_1_1vpx__info.html", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1sdx_1_1vpx__info_1_1vpx__info" ],
+    [ "vpx_info_response", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1sdx_1_1vpx__info_1_1vpx__info__response.html", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1sdx_1_1vpx__info_1_1vpx__info__response" ],
+    [ "vpx_info_responses", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1sdx_1_1vpx__info_1_1vpx__info__responses.html", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1sdx_1_1vpx__info_1_1vpx__info__responses" ]
+];

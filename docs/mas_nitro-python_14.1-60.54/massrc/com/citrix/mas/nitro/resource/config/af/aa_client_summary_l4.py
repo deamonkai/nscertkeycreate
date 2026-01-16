@@ -1,0 +1,464 @@
+'''
+Copyright (c) 2008-2020 Citrix Systems, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+'''
+
+
+from massrc.com.citrix.mas.nitro.resource.Base import *
+from massrc.com.citrix.mas.nitro.service.options import options
+from massrc.com.citrix.mas.nitro.exception.nitro_exception import nitro_exception
+from massrc.com.citrix.mas.nitro.util.filtervalue import filtervalue
+from massrc.com.citrix.mas.nitro.resource.Base.base_resource import base_resource
+from massrc.com.citrix.mas.nitro.resource.Base.base_response import base_response
+
+
+'''
+Configuration for Client Summary table for Level 4 resource
+'''
+
+class aa_client_summary_l4(base_resource):
+	_hits= ""
+	_render_time= ""
+	_load_time= ""
+	_ctnsappname= ""
+	_traffic_type= ""
+	_client_rtt= ""
+	_ssl_failures= ""
+	_rpt_sample_time= ""
+	_client_failures= ""
+	_ip_address= ""
+	_country_name= ""
+	__count=""
+
+	'''
+	get the resource type
+	'''
+	def get_object_type(self) :
+		try:
+			return "aa_client_summary_l4"
+		except Exception as e :
+			raise e
+
+	'''
+	Returns the value of object identifier argument.
+	'''
+	def get_object_id(self) :
+		try:
+			return None
+		except Exception as e :
+			raise e
+
+	'''
+	Returns the value of object file path argument.
+	'''
+	@property
+	def file_path_value(self) :
+		try:
+			return None
+		except Exception as e :
+			raise e
+
+	'''
+	Returns the value of object file component name.
+	'''
+	@property
+	def file_component_value(self) :
+		try :
+			return "aa_client_summary_l4s"
+		except Exception as e :
+			raise e
+
+
+
+	'''
+	get Total Number of Transactions
+	'''
+	@property
+	def hits(self) :
+		try:
+			return self._hits
+		except Exception as e :
+			raise e
+	'''
+	set Total Number of Transactions
+	'''
+	@hits.setter
+	def hits(self,hits):
+		try :
+			if not isinstance(hits,long):
+				raise TypeError("hits must be set to long value")
+			self._hits = hits
+		except Exception as e :
+			raise e
+
+
+	'''
+	get render_time in sampled timeframe.
+	'''
+	@property
+	def render_time(self) :
+		try:
+			return self._render_time
+		except Exception as e :
+			raise e
+	'''
+	set render_time in sampled timeframe.
+	'''
+	@render_time.setter
+	def render_time(self,render_time):
+		try :
+			if not isinstance(render_time,int):
+				raise TypeError("render_time must be set to int value")
+			self._render_time = render_time
+		except Exception as e :
+			raise e
+
+
+	'''
+	get load_time in sampled timeframe.
+	'''
+	@property
+	def load_time(self) :
+		try:
+			return self._load_time
+		except Exception as e :
+			raise e
+	'''
+	set load_time in sampled timeframe.
+	'''
+	@load_time.setter
+	def load_time(self,load_time):
+		try :
+			if not isinstance(load_time,int):
+				raise TypeError("load_time must be set to int value")
+			self._load_time = load_time
+		except Exception as e :
+			raise e
+
+
+	'''
+	get AppName
+	'''
+	@property
+	def ctnsappname(self) :
+		try:
+			return self._ctnsappname
+		except Exception as e :
+			raise e
+	'''
+	set AppName
+	'''
+	@ctnsappname.setter
+	def ctnsappname(self,ctnsappname):
+		try :
+			if not isinstance(ctnsappname,str):
+				raise TypeError("ctnsappname must be set to str value")
+			self._ctnsappname = ctnsappname
+		except Exception as e :
+			raise e
+
+
+	'''
+	get Traffic Type - North/South or East West
+	'''
+	@property
+	def traffic_type(self) :
+		try:
+			return self._traffic_type
+		except Exception as e :
+			raise e
+	'''
+	set Traffic Type - North/South or East West
+	'''
+	@traffic_type.setter
+	def traffic_type(self,traffic_type):
+		try :
+			if not isinstance(traffic_type,int):
+				raise TypeError("traffic_type must be set to int value")
+			self._traffic_type = traffic_type
+		except Exception as e :
+			raise e
+
+
+	'''
+	get client_rtt in sampled timeframe.
+	'''
+	@property
+	def client_rtt(self) :
+		try:
+			return self._client_rtt
+		except Exception as e :
+			raise e
+	'''
+	set client_rtt in sampled timeframe.
+	'''
+	@client_rtt.setter
+	def client_rtt(self,client_rtt):
+		try :
+			if not isinstance(client_rtt,long):
+				raise TypeError("client_rtt must be set to long value")
+			self._client_rtt = client_rtt
+		except Exception as e :
+			raise e
+
+
+	'''
+	get ssl_failures in sampled timeframe.
+	'''
+	@property
+	def ssl_failures(self) :
+		try:
+			return self._ssl_failures
+		except Exception as e :
+			raise e
+	'''
+	set ssl_failures in sampled timeframe.
+	'''
+	@ssl_failures.setter
+	def ssl_failures(self,ssl_failures):
+		try :
+			if not isinstance(ssl_failures,int):
+				raise TypeError("ssl_failures must be set to int value")
+			self._ssl_failures = ssl_failures
+		except Exception as e :
+			raise e
+
+
+	'''
+	get Report Sample time.
+	'''
+	@property
+	def rpt_sample_time(self) :
+		try:
+			return self._rpt_sample_time
+		except Exception as e :
+			raise e
+	'''
+	set Report Sample time.
+	'''
+	@rpt_sample_time.setter
+	def rpt_sample_time(self,rpt_sample_time):
+		try :
+			if not isinstance(rpt_sample_time,long):
+				raise TypeError("rpt_sample_time must be set to long value")
+			self._rpt_sample_time = rpt_sample_time
+		except Exception as e :
+			raise e
+
+
+	'''
+	get client_failures in sampled timeframe.
+	'''
+	@property
+	def client_failures(self) :
+		try:
+			return self._client_failures
+		except Exception as e :
+			raise e
+	'''
+	set client_failures in sampled timeframe.
+	'''
+	@client_failures.setter
+	def client_failures(self,client_failures):
+		try :
+			if not isinstance(client_failures,int):
+				raise TypeError("client_failures must be set to int value")
+			self._client_failures = client_failures
+		except Exception as e :
+			raise e
+
+
+	'''
+	get IP Address
+	'''
+	@property
+	def ip_address(self) :
+		try:
+			return self._ip_address
+		except Exception as e :
+			raise e
+	'''
+	set IP Address
+	'''
+	@ip_address.setter
+	def ip_address(self,ip_address):
+		try :
+			if not isinstance(ip_address,str):
+				raise TypeError("ip_address must be set to str value")
+			self._ip_address = ip_address
+		except Exception as e :
+			raise e
+
+
+	'''
+	get Country Name
+	'''
+	@property
+	def country_name(self) :
+		try:
+			return self._country_name
+		except Exception as e :
+			raise e
+	'''
+	set Country Name
+	'''
+	@country_name.setter
+	def country_name(self,country_name):
+		try :
+			if not isinstance(country_name,str):
+				raise TypeError("country_name must be set to str value")
+			self._country_name = country_name
+		except Exception as e :
+			raise e
+
+	'''
+	Af Report for Anomaly details for this AF Collector.
+	'''
+	@classmethod
+	def get(cls,client = None,resource="",option_=""): 
+		try:
+			response=""
+			if not resource :
+				aa_client_summary_l4_obj=aa_client_summary_l4()
+				response = aa_client_summary_l4_obj.get_resources(client,option_)
+			else:
+				response = resource.get_resource(client, option_)
+			return response
+		except Exception as e :
+			raise e
+
+	'''
+	Use this API to fetch filtered set of aa_client_summary_l4 resources.
+	filter string should be in JSON format.eg: "vm_state:DOWN,name:[a-z]+"
+	'''
+	@classmethod
+	def get_filtered(cls,service,filter_) :
+		try:
+			aa_client_summary_l4_obj = aa_client_summary_l4()
+			option_ = options()
+			option_._filter=filter_
+			return aa_client_summary_l4_obj.getfiltered(service, option_)
+		except Exception as e :
+			raise e
+
+	'''
+	* Use this API to count the aa_client_summary_l4 resources configured on NetScaler SDX.
+	'''
+	@classmethod
+	def count(cls,service) :
+		try:
+			aa_client_summary_l4_obj = aa_client_summary_l4()
+			option_ = options()
+			option_._count=True
+			response = aa_client_summary_l4_obj.get_resources(service, option_)
+			if response :
+				return response[0].__dict__['__count']
+			return 0
+		except Exception as e :
+			raise e
+
+	'''
+	Use this API to count the filtered set of aa_client_summary_l4 resources.
+	filter string should be in JSON format.eg: "vm_state:DOWN,name:[a-z]+"
+	'''
+	@classmethod
+	def count_filtered(cls,service,filter_):
+		try:
+			aa_client_summary_l4_obj = aa_client_summary_l4()
+			option_ = options()
+			option_._count=True
+			option_._filter=filter_
+			response = aa_client_summary_l4_obj.getfiltered(service, option_)
+			if response :
+				return response[0].__dict__['__count']
+			return 0;
+		except Exception as e :
+			raise e
+
+	'''
+	Converts API response into object and returns the object array in case of get request.
+	'''
+	def get_nitro_response(self,service ,response):
+		try :
+			result=service.payload_formatter.string_to_resource(aa_client_summary_l4_response, response, self.__class__.__name__)
+			if(result.errorcode != 0) :
+				if (result.errorcode == 444) :
+					service.clear_session(self)
+				if result.severity :
+					if (result.severity == "ERROR") :
+						raise nitro_exception(result.errorcode, str(result.message), str(result.severity))
+				else :
+					raise nitro_exception(result.errorcode, str(result.message), str(result.severity))
+			return result.aa_client_summary_l4
+		except Exception as e :
+			raise e
+
+
+	'''
+	Converts API response into object and returns the object array .
+	'''
+	def get_nitro_bulk_response(self,service ,response):
+		try :
+			result=service.payload_formatter.string_to_resource(aa_client_summary_l4_responses, response, "aa_client_summary_l4_response_array")
+			if(result.errorcode != 0) :
+				if (result.errorcode == 444) :
+					service.clear_session(self)
+				response = result.aa_client_summary_l4_response_array
+				i=0
+				error = [aa_client_summary_l4() for _ in range(len(response))]
+				for obj in response :
+					error[i]= obj._message
+					i=i+1
+				raise nitro_exception(result.errorcode, str(result.message), error)
+			response = result.aa_client_summary_l4_response_array
+			i=0
+			aa_client_summary_l4_objs = [aa_client_summary_l4() for _ in range(len(response))]
+			for obj in response :
+				for props in obj._aa_client_summary_l4:
+					result = service.payload_formatter.string_to_bulk_resource(aa_client_summary_l4_response,self.__class__.__name__,props)
+					aa_client_summary_l4_objs[i] = result.aa_client_summary_l4
+					i=i+1
+			return aa_client_summary_l4_objs
+		except Exception as e :
+			raise e
+
+
+	'''
+	Performs generic data validation for the operation to be performed
+	'''
+	def validate(self,operationType):
+		try:
+			super(aa_client_summary_l4,self).validate()
+		except Exception as e :
+			raise e
+
+'''
+Forms the proper response.
+'''
+class aa_client_summary_l4_response(base_response):
+	def __init__(self,length=1) :
+		self.aa_client_summary_l4= []
+		self.errorcode = 0 
+		self.message = "" 
+		self.severity = "" 
+		self.aa_client_summary_l4= [ aa_client_summary_l4() for _ in range(length)]
+'''
+Forms the proper response for bulk operation.
+'''
+class aa_client_summary_l4_responses(base_response):
+	def __init__(self,length=1) :
+		self.aa_client_summary_l4_response_array = []
+		self.errorcode = 0 
+		self.message = "" 
+		self.aa_client_summary_l4_response_array = [ aa_client_summary_l4() for _ in range(length)]

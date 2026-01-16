@@ -1,0 +1,22 @@
+[
+  {
+    "device_family": "ns",
+    "display_name": "192.168.113.5-192.168.113.6",
+    "hostname": "mm-adc-1b",
+    "id": "faa5fab8-8520-461b-b3f0-d315633d25d4",
+    "ip_address": "192.168.113.6",
+    "name": "",
+    "status": "Success",
+    "version": "NetScaler NS14.1: Build 60.52.nc, Date: Dec  3 2025, 21:48:23   (64-bit)"
+  },
+  {
+    "device_family": "ns",
+    "display_name": "192.168.113.5-192.168.113.6",
+    "hostname": "mm-adc-1a",
+    "id": "727354d7-c7ca-4e4c-a6c7-eca2e53fea20",
+    "ip_address": "192.168.113.5",
+    "name": "",
+    "status": "Success",
+    "version": "NetScaler NS14.1: Build 60.52.nc, Date: Dec  3 2025, 21:48:23   (64-bit)"
+  }
+]

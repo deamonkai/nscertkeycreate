@@ -1,0 +1,8 @@
+var classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__swg__ssl__detaile97dacdef4f0c0c548113c972c6862f9 =
+[
+    [ "__init__", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__swg__ssl__detaile97dacdef4f0c0c548113c972c6862f9.html#a41f73edd4761149c5acef31ae9ea17a0", null ],
+    [ "af_swg_ssl_details_l4", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__swg__ssl__detaile97dacdef4f0c0c548113c972c6862f9.html#abdfec5e5f01b84c875f6a83482e8f9a0", null ],
+    [ "errorcode", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__swg__ssl__detaile97dacdef4f0c0c548113c972c6862f9.html#a3249e18f6368951ecf5144d6c552738d", null ],
+    [ "message", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__swg__ssl__detaile97dacdef4f0c0c548113c972c6862f9.html#ab8140947611504abcb64a4c277effcf5", null ],
+    [ "severity", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__swg__ssl__detaile97dacdef4f0c0c548113c972c6862f9.html#ac43d617574d9fb283e14222f57084270", null ]
+];

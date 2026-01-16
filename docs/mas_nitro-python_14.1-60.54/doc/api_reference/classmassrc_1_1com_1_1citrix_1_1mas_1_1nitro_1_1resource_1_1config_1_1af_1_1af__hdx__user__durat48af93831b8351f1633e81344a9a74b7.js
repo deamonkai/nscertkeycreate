@@ -1,0 +1,7 @@
+var classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__hdx__user__durat48af93831b8351f1633e81344a9a74b7 =
+[
+    [ "__init__", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__hdx__user__durat48af93831b8351f1633e81344a9a74b7.html#a41f73edd4761149c5acef31ae9ea17a0", null ],
+    [ "af_hdx_user_duration_l4_response_array", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__hdx__user__durat48af93831b8351f1633e81344a9a74b7.html#ab40fc3d0c2f1b0f6e5b3cffbf76f7db5", null ],
+    [ "errorcode", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__hdx__user__durat48af93831b8351f1633e81344a9a74b7.html#a3249e18f6368951ecf5144d6c552738d", null ],
+    [ "message", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__hdx__user__durat48af93831b8351f1633e81344a9a74b7.html#ab8140947611504abcb64a4c277effcf5", null ]
+];

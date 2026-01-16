@@ -1,0 +1,26 @@
+var classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration =
+[
+    [ "add", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#aba290ed3e7d0fd6be0765ae0f9589dd7", null ],
+    [ "agent_id", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#a1980174a71a88fbf624d57934f4f0e9b", null ],
+    [ "agent_id", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#ad2a1782120a3f61abe0861e3f32f5e39", null ],
+    [ "device_ip_address", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#a2f89539e1b090f68ac0fd64280e65aff", null ],
+    [ "device_ip_address", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#a8cccff31aa6f1a79e2008e2a5cce85b4", null ],
+    [ "device_type", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#a5788877117790faca0f116421ff99d4e", null ],
+    [ "device_type", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#a30e412d4e0d9714248d5b00a3f9bbd2c", null ],
+    [ "file_component_value", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#aef9f5651e1fe3901e8e786a00327f735", null ],
+    [ "file_path_value", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#a228470962d5ee7dd6b328c17e6338281", null ],
+    [ "get_nitro_bulk_response", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#a1ecd83ef85666a243500fb4939686572", null ],
+    [ "get_nitro_response", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#a14c2d1866b2fdaaac793bf9f16451bcb", null ],
+    [ "get_object_id", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#aa91ff01b4a749cfdb6a7d9ad6af50c0c", null ],
+    [ "get_object_type", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#ae5400af3b60413efbb6ecb215d0d3c46", null ],
+    [ "get_resource_id", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#abd7b75259645e4fa05b15255a20fb382", null ],
+    [ "validate", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#a885cfb7c695166fd92d5a55239bcb465", null ],
+    [ "_agent_id", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#aa4f8869e88f1724633e34ef944e1b2e4", null ],
+    [ "_agent_id", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#a541fcba7dab9bed99ef8fa932187ff54", null ],
+    [ "_device_ip_address", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#a16f50d821686d7dc1df782de76b9e5b1", null ],
+    [ "_device_ip_address", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#ac3cfafef248145c66fea9b33bea625b2", null ],
+    [ "_device_type", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#ae1599668f49b1e1f689fc1ffa5a15982", null ],
+    [ "_device_type", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#abe9739f6b570d56ec979c084fe18609a", null ],
+    [ "_op_by_primary_key_name", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#a6f9f3676783df271c50d4919a962b058", null ],
+    [ "_url_filter", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1mps_1_1device__registration_1_1device__registration.html#af75e25ae2f1b818112850de42ce97e53", null ]
+];

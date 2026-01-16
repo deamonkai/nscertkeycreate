@@ -1,0 +1,7 @@
+var classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__hdx__active__ses9da87232e4fbc7b5aae8b24c94f812cf =
+[
+    [ "__init__", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__hdx__active__ses9da87232e4fbc7b5aae8b24c94f812cf.html#a41f73edd4761149c5acef31ae9ea17a0", null ],
+    [ "af_hdx_active_session_details_l2_response_array", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__hdx__active__ses9da87232e4fbc7b5aae8b24c94f812cf.html#ad08fc7096e8416e9b9a99f68688ea8f9", null ],
+    [ "errorcode", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__hdx__active__ses9da87232e4fbc7b5aae8b24c94f812cf.html#a3249e18f6368951ecf5144d6c552738d", null ],
+    [ "message", "classmassrc_1_1com_1_1citrix_1_1mas_1_1nitro_1_1resource_1_1config_1_1af_1_1af__hdx__active__ses9da87232e4fbc7b5aae8b24c94f812cf.html#ab8140947611504abcb64a4c277effcf5", null ]
+];
