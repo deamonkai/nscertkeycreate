@@ -123,17 +123,57 @@ class NitroConsoleClient:
         )
         return self._parse_json(resp)
 
-    def upload_file(self, path: str, file_path: str) -> Dict[str, Any]:
+    def upload_file(
+        self,
+        path: str,
+        file_path: str,
+        *,
+        basic_user: Optional[str] = None,
+        basic_password: Optional[str] = None,
+    ) -> Dict[str, Any]:
         url = self._url(path)
+        headers = self._headers()
+        if basic_user and basic_password:
+            headers["X-NITRO-USER"] = basic_user
+            headers["X-NITRO-PASS"] = basic_password
         with open(file_path, "rb") as handle:
             resp = requests.post(
                 url,
-                headers=self._headers(),
+                headers=headers,
                 files={"file": handle},
                 verify=self.verify,
                 timeout=self.timeout,
             )
         return self._parse_json(resp)
+
+    def download_file(self, resource: str, file_name: str) -> bytes:
+        url = self._url(f"/nitro/v2/download/{resource}/{file_name}")
+        resp = requests.get(
+            url,
+            headers=self._headers(),
+            verify=self.verify,
+            timeout=self.timeout,
+        )
+        if resp.status_code >= 400:
+            raise NitroError(resp.status_code, resp.text, headers=dict(resp.headers))
+        return resp.content
+
+    def get_system_settings(self) -> Dict[str, Any]:
+        data = self.get_json("/nitro/v2/config/system_settings")
+        settings = data.get("system_settings")
+        if isinstance(settings, list) and settings:
+            return settings[0]
+        if isinstance(settings, dict):
+            return settings
+        return {}
+
+    def set_basicauth(self, enabled: bool) -> None:
+        settings = self.get_system_settings()
+        settings_id = settings.get("id")
+        if not settings_id:
+            raise NitroError(400, "system_settings id not found")
+        payload = {"system_settings": {"basicauth": bool(enabled)}}
+        self.put_json(f"/nitro/v2/config/system_settings/{settings_id}", payload)
 
     def create_key(
         self,

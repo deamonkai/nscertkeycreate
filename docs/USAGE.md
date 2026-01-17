@@ -91,6 +91,15 @@ python -m certctl.scripts.csr_submit --ca adcs --csr ./out/example.com.csr --wai
   --adcs-base-url https://regionsissuing/certsrv --adcs-include-chain --adcs-chain-out ./out/example.com.chain.pem
 ```
 
+Submit to the self-signed workflow CA (local testing):
+
+```bash
+python -m certctl.scripts.csr_submit --ca selfsigned --csr ./out/example.com.csr --wait --out ./out/example.com.crt \
+  --selfsign-ca-dir ./out/selfsigned --selfsign-include-chain --selfsign-chain-out ./out/example.com.chain.pem
+```
+
+Self-signed passphrase can be provided via `CERTCTL_SELFSIGN_PASSPHRASE` (or `CERTCTL_KEY_PASSPHRASE`).
+
 Auto-select CA (ADCS for any CN/SAN containing `rgbk.com`, otherwise Sectigo):
 
 ```bash
@@ -118,6 +127,33 @@ python -m certctl.scripts.nsconsole_certpoll --console https://console.example -
 Binding details included in reports:
 - `binding_count` = number of bound entities
 - `binding_entities` = bound entity names (vservers/services/service-groups)
+
+Imperva deploy
+--------------
+
+Deploy a cert stored in NetScaler Console to Imperva (combined PEM built automatically):
+
+```bash
+python -m certctl.scripts.imperva_deploy --certkeypair example.com --site-id 123456 \
+  --console https://console.example --user nsroot --insecure
+```
+
+Imperva API credentials:
+- Env: `IMPERVA_API_ID`, `IMPERVA_API_KEY` (otherwise you will be prompted).
+
+Notes:
+- Uses `PUT /api/prov/v2/sites/{siteId}/customCertificate` with base64-encoded PEM and key.
+- The combined PEM is only created for Imperva; Console/ADC keep certs and CA files separate.
+
+Self-signed Console + ADC deploy
+--------------------------------
+
+Generate a self-signed cert, upload it to Console, and deploy to ADCs:
+
+```bash
+python -m certctl.scripts.selfsigned_console_deploy --cn www.molloytest.net --kind rsa --out ./out \
+  --console https://192.168.113.2 --user nsroot --insecure --list-adc-menu
+```
 - `binding_types` = entity types (e.g., sslvserver, service)
 - `binding_devices` = device display names or hostnames
 

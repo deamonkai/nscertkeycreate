@@ -112,7 +112,12 @@ def _upload_to_console(args: argparse.Namespace, key_path: Path, passphrase: str
 
     client = NitroConsoleClient(base=args.console, verify=verify, timeout=args.timeout)
     client.login(args.user, password)
-    client.upload_file("/nitro/v2/upload/ns_ssl_key", str(key_path))
+    client.upload_file(
+        "/nitro/v2/upload/ns_ssl_key",
+        str(key_path),
+        basic_user=args.user,
+        basic_password=password,
+    )
     if args.register_console:
         algo = "RSA" if args.kind == "rsa" else "ECDSA"
         keysize = DEFAULT_RSA_BITS if args.kind == "rsa" else None

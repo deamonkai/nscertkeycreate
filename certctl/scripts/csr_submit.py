@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Optional
 
 from certctl.ca.adcs import AdcsAdapter, AdcsConfig
+from certctl.ca.selfsigned import SelfSignedAdapter, SelfSignedConfig
 from certctl.secretstore import delete_secret, get_secret, is_available, set_secret
 from certctl.ca.sectigo import SectigoAdapter, SectigoConfig
 
@@ -224,6 +225,26 @@ def _build_adcs(args: argparse.Namespace) -> AdcsAdapter:
     )
 
 
+def _build_selfsigned(args: argparse.Namespace) -> SelfSignedAdapter:
+    passphrase = (
+        args.selfsign_passphrase
+        or os.environ.get("CERTCTL_SELFSIGN_PASSPHRASE")
+        or os.environ.get("CERTCTL_KEY_PASSPHRASE")
+    )
+    if not passphrase:
+        passphrase = getpass.getpass("Self-signed CA passphrase (AES-256): ")
+    if not passphrase:
+        raise SystemExit("Self-signed CA passphrase is required.")
+    return SelfSignedAdapter(
+        SelfSignedConfig(
+            ca_dir=args.selfsign_ca_dir,
+            passphrase=passphrase,
+            ca_days=args.selfsign_ca_days,
+            leaf_days=args.selfsign_leaf_days,
+        )
+    )
+
+
 def run(args: argparse.Namespace) -> int:
     csr_pem = _load_csr(args.csr)
 
@@ -239,8 +260,10 @@ def run(args: argparse.Namespace) -> int:
 
     if ca == "sectigo":
         adapter = _build_sectigo(args)
-    else:
+    elif ca == "adcs":
         adapter = _build_adcs(args)
+    else:
+        adapter = _build_selfsigned(args)
 
     submit = adapter.submit_csr(csr_pem, subj_alt_names=args.sectigo_sans)
     print(json.dumps({"ca": submit.ca, "request_id": submit.request_id}, indent=2))
@@ -263,6 +286,12 @@ def run(args: argparse.Namespace) -> int:
                 chain_pem = adapter.collect_chain(submit.request_id)  # type: ignore[attr-defined]
                 chain_out.write_text(chain_pem, encoding="utf-8")
                 print(f"Wrote certificate chain: {chain_out}")
+            if args.selfsign_include_chain and hasattr(adapter, "collect_chain"):
+                chain_out = Path(args.selfsign_chain_out)
+                chain_out.parent.mkdir(parents=True, exist_ok=True)
+                chain_pem = adapter.collect_chain(submit.request_id)  # type: ignore[attr-defined]
+                chain_out.write_text(chain_pem, encoding="utf-8")
+                print(f"Wrote self-signed chain: {chain_out}")
             return 0
 
         if time.time() > deadline:
@@ -273,7 +302,7 @@ def run(args: argparse.Namespace) -> int:
 
 def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Submit a CSR to a CA and collect the certificate.")
-    parser.add_argument("--ca", choices=["sectigo", "adcs"], help="CA adapter to use")
+    parser.add_argument("--ca", choices=["sectigo", "adcs", "selfsigned"], help="CA adapter to use")
     parser.add_argument("--auto-ca", action="store_true", default=False, help="Auto-select CA based on CN/SANs")
     parser.add_argument("--cn", help="Common Name for auto CA selection")
     parser.add_argument("--san", help="SAN list for auto CA selection (comma-separated)")
@@ -319,6 +348,21 @@ def build_arg_parser() -> argparse.ArgumentParser:
         "--adcs-chain-out",
         default="./out/chain.pem",
         help="Output path for ADCS chain PEM",
+    )
+    parser.add_argument("--selfsign-ca-dir", default="./out/selfsigned", help="Output directory for self-signed CA")
+    parser.add_argument("--selfsign-passphrase", help="Self-signed CA key passphrase")
+    parser.add_argument("--selfsign-ca-days", type=int, default=60, help="Self-signed CA validity in days")
+    parser.add_argument("--selfsign-leaf-days", type=int, default=59, help="Self-signed leaf validity in days")
+    parser.add_argument(
+        "--selfsign-include-chain",
+        action="store_true",
+        default=False,
+        help="Write a combined leaf+CA chain (self-signed only)",
+    )
+    parser.add_argument(
+        "--selfsign-chain-out",
+        default="./out/selfsigned_chain.pem",
+        help="Output path for the self-signed chain PEM",
     )
     parser.add_argument("--insecure", action="store_true", help="Disable TLS verification")
     parser.add_argument("--ca-bundle", help="Path to CA bundle for TLS verification")

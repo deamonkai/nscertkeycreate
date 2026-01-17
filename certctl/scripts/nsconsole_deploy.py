@@ -70,7 +70,7 @@ def _load_password(username: str, console: str, provided: Optional[str]) -> str:
 def _parse_cn(subject: str) -> Optional[str]:
     if not subject:
         return None
-    match = re.search(r"(?:^|[,/\\s])CN=([^,/]+)", subject)
+    match = re.search(r"(?:^|[,/\\s])CN\\s*=\\s*([^,/]+)", subject)
     if match:
         return match.group(1).strip()
     return None
@@ -96,6 +96,17 @@ def _find_certkey(client: NitroConsoleClient, name: str, *, resolve_cn: bool) ->
         return items
     if isinstance(items, list) and items:
         return items[0]
+    normalized = _normalize_certkey_name(name)
+    if normalized and normalized != name:
+        payload = client.get_json(
+            "/nitro/v2/config/ns_ssl_certkey",
+            params={"filter": f"certkeypair_name:{normalized}"},
+        )
+        items = payload.get("ns_ssl_certkey", [])
+        if isinstance(items, dict):
+            return items
+        if isinstance(items, list) and items:
+            return items[0]
     if not resolve_cn:
         raise SystemExit(f"Certkeypair not found: {name}")
 
@@ -256,9 +267,18 @@ def _find_certkey_with_sync(
         raise SystemExit("Cannot import missing cert without --adc-ip or --list-adc menu selection.")
     if not _import_from_adc(client, name, adc_ips=import_adc_ips):
         raise SystemExit(f"Certkeypair not found on ADCs: {name}")
+    print(f"Imported cert from ADCs for {name}. Refreshing Console inventory...")
+    _trigger_inventory(client)
     if import_wait > 0:
+        print(f"Waiting {import_wait} seconds as requested...")
         time.sleep(import_wait)
-    return _find_certkey(client, name, resolve_cn=resolve_cn)
+    try:
+        return _find_certkey(client, name, resolve_cn=resolve_cn)
+    except SystemExit as exc:
+        raise SystemExit(
+            f"Imported cert from ADC but not yet visible in Console inventory: {name}. "
+            "Try --import-wait or --sync --sync-wait."
+        ) from exc
 
 
 def _extract_bindings(cert: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -333,9 +353,17 @@ def _upload_ca_cert(
     ca_name: str,
     cert_path: Path,
     ns_ip_addresses: List[str],
+    *,
+    client_user: str,
+    client_password: str,
 ) -> None:
     if not _cert_exists(client, cert_path.name):
-        client.upload_file("/nitro/v2/upload/ns_ssl_cert", str(cert_path))
+        client.upload_file(
+            "/nitro/v2/upload/ns_ssl_cert",
+            str(cert_path),
+            basic_user=client_user,
+            basic_password=client_password,
+        )
     if not _certkey_exists(client, ca_name):
         payload = {
             "ns_ssl_certkey": {
@@ -520,14 +548,31 @@ def run(args: argparse.Namespace) -> int:
         raise SystemExit(f"No bindings found for certkeypair: {source_name}")
 
     ns_ips = [b.get("ns_ip_address") for b in bindings if b.get("ns_ip_address")]
+    if ns_ips:
+        print(f"Using ADC bindings for {source_name}: {', '.join(ns_ips)}")
+    else:
+        print(f"No ADC IPs resolved for {source_name}; bindings will be attempted without IPs.")
 
     ca_pairs = _parse_ca_inputs(args)
     if args.link_ca and not ca_pairs:
         chain_names = _extract_chain_names(source_cert)
         ca_pairs = [(name, None) for name in chain_names]
+    if args.link_ca:
+        if ca_pairs:
+            ca_names = ", ".join([name for name, _ in ca_pairs if name])
+            print(f"CA linking enabled. CA certs: {ca_names}")
+        else:
+            print("CA linking enabled but no CA certs specified or found in chain metadata.")
     for ca_name, ca_path in ca_pairs:
         if ca_path:
-            _upload_ca_cert(client, ca_name, ca_path, ns_ips)
+            _upload_ca_cert(
+                client,
+                ca_name,
+                ca_path,
+                ns_ips,
+                client_user=args.user,
+                client_password=password,
+            )
 
     for binding in bindings:
         _bind_cert(client, args.certkeypair, target_cert.get("id"), binding)
@@ -535,6 +580,7 @@ def run(args: argparse.Namespace) -> int:
             for ca_name, _ in ca_pairs:
                 _link_ca(client, args.certkeypair, ca_name, binding.get("ns_ip_address"))
 
+    print(f"Deployed {args.certkeypair} to {len(bindings)} ADC(s).")
     return 0
 
 
