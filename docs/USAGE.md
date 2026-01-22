@@ -154,6 +154,26 @@ Generate a self-signed cert, upload it to Console, and deploy to ADCs:
 python -m certctl.scripts.selfsigned_console_deploy --cn www.molloytest.net --kind rsa --out ./out \
   --console https://192.168.113.2 --user nsroot --insecure --list-adc-menu
 ```
+
+Console cert_store probe (minimal payloads)
+-------------------------------------------
+
+Probe minimal cert_store payloads for server + CA certs:
+
+```bash
+python -m certctl.scripts.console_cert_store_probe \
+  --console https://192.168.113.2 --user nsroot --insecure \
+  --ca-name Molloy_Root_CA_RSA --ca-cert ./out/www.molloytest.net-20260121-165010.ca.pem \
+  --name www_molloytest_net --cert ./out/www.molloytest.net-20260121-165010.crt \
+  --key ./out/www.molloytest.net-20260121-165010.key --domain www.molloytest.net
+```
+
+Use `--dry-run` to print payload sizes without sending requests.
+
+Optional flags for alternate payloads:
+- `--include-key-file` adds `key_file` to the server payload.
+- `--cert-type server_cert` and `--ca-cert-type root_cert` add cert_type values.
+- `--cert-file-name` / `--ca-cert-file-name` override file_name fields.
 - `binding_types` = entity types (e.g., sslvserver, service)
 - `binding_devices` = device display names or hostnames
 

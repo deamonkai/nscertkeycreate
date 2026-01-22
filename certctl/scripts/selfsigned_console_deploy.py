@@ -4,12 +4,16 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import getpass
 import os
 import re
+import shutil
+import subprocess
 import time
+import tempfile
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from certctl.ca.selfsigned import SelfSignedAdapter, SelfSignedConfig
 from certctl.console import NitroConsoleClient, NitroError
@@ -61,6 +65,149 @@ def _write_text(path: Path, content: str) -> None:
 def _read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
+
+def _b64_clean(value: str) -> str:
+    encoded = base64.b64encode(value.encode("utf-8")).decode("ascii")
+    return encoded.rstrip("%")
+
+
+def _store_code_error(response: Dict[str, Any]) -> Optional[str]:
+    items = response.get("cert_store")
+    if isinstance(items, list) and items:
+        store_code = items[0].get("store_code")
+    elif isinstance(items, dict):
+        store_code = items.get("store_code")
+    else:
+        return None
+    if store_code not in (0, "0", None):
+        return str(store_code)
+    return None
+
+
+def _cert_store_payload(
+    *,
+    name: str,
+    cert_file_name: str,
+    cert_pem: str,
+    key_file_name: Optional[str],
+    key_pem: Optional[str],
+    passphrase: Optional[str],
+    domain: Optional[str],
+    chain_pem: Optional[str],
+    cert_type: Optional[str],
+    encode_b64: bool,
+) -> Dict[str, Any]:
+    cert_data = _b64_clean(cert_pem) if encode_b64 else cert_pem
+    payload: Dict[str, Any] = {
+        "cert_store": {
+            "name": name,
+            "cert_format": "PEM",
+            "cert_data": {"file_name": cert_file_name, "file_data": cert_data},
+        }
+    }
+    if cert_type:
+        payload["cert_store"]["cert_type"] = cert_type
+    if key_pem and passphrase is not None:
+        if key_file_name:
+            payload["cert_store"]["key_file"] = key_file_name
+        payload["cert_store"]["key_data"] = _b64_clean(key_pem) if encode_b64 else key_pem
+        payload["cert_store"]["password"] = passphrase
+    if domain:
+        payload["cert_store"]["domain"] = domain
+    if chain_pem:
+        payload["cert_store"]["certchain_data"] = [
+            {
+                "file_name": "chain.pem",
+                "file_data": _b64_clean(chain_pem) if encode_b64 else chain_pem,
+            }
+        ]
+    return payload
+
+
+def _normalize_subject(value: str) -> str:
+    cleaned = value.replace("&apos;", "'")
+    cleaned = re.sub(r"\\s+", "", cleaned)
+    return cleaned.lower()
+
+
+def _require_openssl() -> str:
+    path = shutil.which("openssl")
+    if not path:
+        raise SystemExit("OpenSSL not found in PATH.")
+    return path
+
+
+def _split_pem_certs(pem: str) -> List[str]:
+    return re.findall(
+        r"-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----",
+        pem,
+        flags=re.DOTALL,
+    )
+
+
+def _extract_cn(subject: str) -> Optional[str]:
+    if not subject:
+        return None
+    match = re.search(r"CN\\s*=\\s*([^,/]+)", subject)
+    if match:
+        return match.group(1).strip()
+    return None
+
+
+def _cert_cn_from_pem(pem: str) -> Optional[str]:
+    openssl = _require_openssl()
+    with tempfile.NamedTemporaryFile("w", delete=False, encoding="utf-8") as handle:
+        handle.write(pem)
+        tmp_path = handle.name
+    try:
+        proc = subprocess.run(
+            [openssl, "x509", "-noout", "-subject", "-nameopt", "RFC2253", "-in", tmp_path],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    finally:
+        try:
+            os.unlink(tmp_path)
+        except OSError:
+            pass
+    subject_line = proc.stdout.strip()
+    subject = subject_line.replace("subject=", "", 1).strip()
+    cn = _extract_cn(subject)
+    if cn:
+        return cn
+    match = re.search(r"CN\\s*=\\s*([^,/]+)", subject_line)
+    if match:
+        return match.group(1).strip()
+    return None
+
+
+def _cert_subject_serial_from_pem(pem: str) -> Dict[str, str]:
+    openssl = _require_openssl()
+    with tempfile.NamedTemporaryFile("w", delete=False, encoding="utf-8") as handle:
+        handle.write(pem)
+        tmp_path = handle.name
+    try:
+        proc = subprocess.run(
+            [openssl, "x509", "-noout", "-subject", "-serial", "-in", tmp_path],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    finally:
+        try:
+            os.unlink(tmp_path)
+        except OSError:
+            pass
+    subject = ""
+    serial = ""
+    for line in proc.stdout.splitlines():
+        line = line.strip()
+        if line.startswith("subject="):
+            subject = line.replace("subject=", "", 1).strip()
+        elif line.startswith("serial="):
+            serial = line.replace("serial=", "", 1).strip()
+    return {"subject": subject, "serial": serial}
 
 def _is_basicauth_enabled(value: object) -> bool:
     if isinstance(value, bool):
@@ -175,6 +322,293 @@ def _upload_console_certkey(
     client.post_json("/nitro/v2/config/ns_ssl_certkey", payload)
 
 
+def _upload_console_cert_store(
+    client: NitroConsoleClient,
+    *,
+    certkeypair_name: str,
+    cert_file: Path,
+    key_file: Path,
+    passphrase: str,
+    domain: Optional[str] = None,
+    chain_pem: Optional[str] = None,
+) -> Dict[str, Any]:
+    cert_pem = _read_text(cert_file)
+    key_pem = _read_text(key_file)
+    store_cert_name = f"{certkeypair_name}.pem"
+    store_key_name = certkeypair_name
+    print(f"[console] cert_store entry not found; creating {certkeypair_name}.")
+    payload = _cert_store_payload(
+        name=certkeypair_name,
+        cert_file_name=store_cert_name,
+        cert_pem=cert_pem,
+        key_file_name=store_key_name,
+        key_pem=key_pem,
+        passphrase=passphrase,
+        domain=domain,
+        chain_pem=chain_pem,
+        cert_type="server_cert",
+        encode_b64=True,
+    )
+    cert_meta = _cert_subject_serial_from_pem(cert_pem)
+    try:
+        response = client.post_json("/nitro/v2/config/cert_store", payload)
+        store_code = _store_code_error(response)
+        if store_code:
+            print(f"[console] cert_store upload returned store_code={store_code} for {certkeypair_name}.")
+            print(
+                "[console] cert_store payload sizes:"
+                f" cert_b64={len(_b64_clean(cert_pem))}"
+                f" key_b64={len(_b64_clean(key_pem))}"
+                f" chain_b64={len(_b64_clean(chain_pem)) if chain_pem else 0}"
+            )
+        items = response.get("cert_store")
+        if isinstance(items, list) and items and items[0].get("id"):
+            return response
+        if isinstance(items, dict) and items.get("id"):
+            return response
+        print(f"[console] cert_store upload response missing id for {certkeypair_name}: {response}")
+        return response
+    except NitroError as exc:
+        message = str(exc.message).lower()
+        if exc.status_code == 409 or "already exists" in message:
+            print("[console] cert_store entry already exists; reusing existing entry.")
+            existing = _find_cert_store_entry(
+                client,
+                name=certkeypair_name,
+                domain="",
+                retries=3,
+                wait_seconds=2,
+            )
+            if existing:
+                response = _update_cert_store(
+                    client,
+                    entry_id=str(existing["id"]),
+                    name=certkeypair_name,
+                    cert_file_name=store_cert_name,
+                    cert_pem=cert_pem,
+                    key_file_name=store_key_name,
+                    key_pem=key_pem,
+                    passphrase=passphrase,
+                    domain=domain,
+                    chain_pem=chain_pem,
+                    encode_b64=True,
+                )
+                return response
+        raise
+
+
+def _list_cert_store(client: NitroConsoleClient, *, pagesize: int = 200) -> List[Dict[str, Any]]:
+    payload = client.get_json("/nitro/v2/config/cert_store", params={"pagesize": str(pagesize)})
+    items = payload.get("cert_store") or []
+    if isinstance(items, list):
+        return [item for item in items if isinstance(item, dict)]
+    if isinstance(items, dict):
+        return [items]
+    return []
+
+
+def _summarize_cert_store(items: List[Dict[str, Any]], *, limit: int = 5) -> str:
+    fields = ["name", "domain", "subject", "serial_number", "key_file", "created_time", "id"]
+    rows = []
+    for item in items[:limit]:
+        rows.append({k: item.get(k) for k in fields})
+    return str(rows)
+
+
+def _find_cert_store_entry(
+    client: NitroConsoleClient,
+    *,
+    name: str,
+    domain: str,
+    subject: str = "",
+    serial: str = "",
+    key_file: str = "",
+    retries: int = 3,
+    wait_seconds: int = 2,
+) -> Optional[dict]:
+    for attempt in range(1, retries + 1):
+        if name:
+            payload = client.get_json(
+                "/nitro/v2/config/cert_store",
+                params={"filter": f"name:{name}", "pagesize": "200"},
+            )
+            items = payload.get("cert_store") or []
+            if isinstance(items, dict):
+                items = [items]
+            for item in items:
+                if isinstance(item, dict) and item.get("name") == name:
+                    return item
+        if attempt < retries:
+            print(f"[console] Waiting {wait_seconds} seconds for cert_store to refresh...")
+            time.sleep(wait_seconds)
+    return None
+
+
+def _register_certkey_from_store(
+    client: NitroConsoleClient,
+    *,
+    certkeypair_name: str,
+    cert_store_id: str,
+    passphrase: Optional[str],
+    chain_pem: Optional[str] = None,
+    ns_ip_addresses: Optional[List[str]] = None,
+) -> None:
+    payload = {
+        "ns_ssl_certkey": {
+            "certkeypair_name": certkeypair_name,
+            "cert_store_id": cert_store_id,
+        }
+    }
+    if passphrase:
+        payload["ns_ssl_certkey"]["password"] = passphrase
+    if chain_pem:
+        payload["ns_ssl_certkey"]["certchain_data"] = [
+            {"file_name": "chain.pem", "file_data": _b64_clean(chain_pem)}
+        ]
+    if ns_ip_addresses:
+        payload["ns_ssl_certkey"]["ns_ip_address_arr"] = ns_ip_addresses
+    client.post_json("/nitro/v2/config/ns_ssl_certkey", payload)
+
+
+def _register_ca_certkey_inline(
+    client: NitroConsoleClient,
+    *,
+    ca_name: str,
+    ca_pem: str,
+    ns_ip_addresses: Optional[List[str]] = None,
+) -> None:
+    payload = {
+        "ns_ssl_certkey": {
+            "certkeypair_name": ca_name,
+            "certificate_data": ca_pem,
+            "cert_format": "PEM",
+        }
+    }
+    if ns_ip_addresses:
+        payload["ns_ssl_certkey"]["ns_ip_address_arr"] = ns_ip_addresses
+    client.post_json("/nitro/v2/config/ns_ssl_certkey", payload)
+
+
+def _find_certkeypair(
+    client: NitroConsoleClient,
+    name: str,
+    *,
+    retries: int = 3,
+    wait_seconds: int = 2,
+) -> Optional[Dict[str, Any]]:
+    for attempt in range(1, retries + 1):
+        payload = client.get_json("/nitro/v2/config/ns_ssl_certkey", params={"pagesize": "200"})
+        items = payload.get("ns_ssl_certkey") or []
+        if isinstance(items, dict):
+            items = [items]
+        for item in items:
+            if isinstance(item, dict) and item.get("certkeypair_name") == name:
+                return item
+        if attempt < retries:
+            print(f"[console] Waiting {wait_seconds} seconds for certkeypair to appear...")
+            time.sleep(wait_seconds)
+    return None
+
+
+def _upload_ca_cert_store(
+    client: NitroConsoleClient,
+    *,
+    ca_name: str,
+    ca_pem: str,
+) -> Optional[str]:
+    print(f"[console] CA cert_store entry not found; creating {ca_name}.")
+    payload = _cert_store_payload(
+        name=ca_name,
+        cert_file_name=f"{ca_name}.pem",
+        cert_pem=ca_pem,
+        key_file_name=None,
+        key_pem=None,
+        passphrase=None,
+        domain=None,
+        chain_pem=None,
+        cert_type="server_cert",
+        encode_b64=True,
+    )
+    try:
+        response = client.post_json("/nitro/v2/config/cert_store", payload)
+        store_code = _store_code_error(response)
+        if store_code:
+            print(f"[console] CA cert_store upload returned store_code={store_code} for {ca_name}.")
+    except NitroError as exc:
+        message = str(exc.message).lower()
+        if exc.status_code == 409 or "already exists" in message:
+            entry = _find_cert_store_entry(client, name=ca_name, domain="", retries=3, wait_seconds=2)
+            if entry and entry.get("id"):
+                response = _update_cert_store(
+                    client,
+                    entry_id=str(entry["id"]),
+                    name=ca_name,
+                    cert_file_name=f"{ca_name}.pem",
+                    cert_pem=ca_pem,
+                    key_file_name=None,
+                    key_pem=None,
+                    passphrase=None,
+                    domain=None,
+                    chain_pem=None,
+                    encode_b64=True,
+                )
+                return str(entry["id"])
+        print(f"[console] CA cert_store upload failed for {ca_name}: {exc}")
+        return None
+    items = response.get("cert_store")
+    if isinstance(items, list) and items:
+        entry_id = items[0].get("id") or ""
+        if entry_id:
+            return str(entry_id)
+    if isinstance(items, dict) and items.get("id"):
+        return str(items["id"])
+    print(f"[console] CA cert_store upload response missing id for {ca_name}: {response}")
+    entry = _find_cert_store_entry(client, name=ca_name, domain="", retries=10, wait_seconds=3)
+    if entry and entry.get("id"):
+        return str(entry["id"])
+    return None
+
+
+def _update_cert_store(
+    client: NitroConsoleClient,
+    *,
+    entry_id: str,
+    name: str,
+    cert_file_name: str,
+    cert_pem: str,
+    key_file_name: Optional[str],
+    key_pem: Optional[str],
+    passphrase: Optional[str],
+    domain: Optional[str],
+    chain_pem: Optional[str],
+    encode_b64: bool = True,
+) -> Dict[str, Any]:
+    payload = _cert_store_payload(
+        name=name,
+        cert_file_name=cert_file_name,
+        cert_pem=cert_pem,
+        key_file_name=key_file_name,
+        key_pem=key_pem,
+        passphrase=passphrase,
+        domain=domain,
+        chain_pem=chain_pem,
+        cert_type=None,
+        encode_b64=encode_b64,
+    )
+    payload["cert_store"]["id"] = entry_id
+    payload["cert_store"]["update_cert_and_key"] = bool(key_pem)
+    payload["cert_store"]["update_cert_chain"] = bool(chain_pem)
+    return client.put_json(f"/nitro/v2/config/cert_store/{entry_id}", payload)
+
+
+def _trigger_cert_inventory(client: NitroConsoleClient) -> None:
+    payload = {"ns_ssl_certkey": {}}
+    try:
+        client.post_json("/nitro/v2/config/ns_ssl_certkey", payload, params={"action": "inventory"})
+    except NitroError as exc:
+        print(f"[console] Inventory trigger failed: {exc}")
+
+
 def _upload_console_ca(
     client: NitroConsoleClient,
     *,
@@ -262,10 +696,11 @@ def run(args: argparse.Namespace) -> int:
     csr_pem = csr_path.read_text(encoding="utf-8")
 
     ca_dir = out_dir / "selfsigned"
+    selfsign_passphrase = _selfsign_passphrase(args)
     adapter = SelfSignedAdapter(
         SelfSignedConfig(
             ca_dir=str(ca_dir),
-            passphrase=_selfsign_passphrase(args),
+            passphrase=selfsign_passphrase,
             ca_days=args.ca_days,
             leaf_days=args.leaf_days,
         )
@@ -273,6 +708,7 @@ def run(args: argparse.Namespace) -> int:
     submit = adapter.submit_csr(csr_pem)
     leaf_pem = adapter.collect_certificate(submit.request_id)
     chain_pem = adapter.collect_chain(submit.request_id)
+    ca_cn = adapter.config.rsa_cn if args.kind == "rsa" else adapter.config.ecdsa_cn
 
     cert_path = out_dir / f"{args.cn}-{stamp}.crt"
     chain_path = out_dir / f"{args.cn}-{stamp}.chain.pem"
@@ -283,10 +719,12 @@ def run(args: argparse.Namespace) -> int:
 
     ca_pem = _extract_chain_cas(chain_pem)
     ca_file = None
+    ca_blocks: List[str] = []
     if ca_pem:
         ca_file = out_dir / f"{args.cn}-{stamp}.ca.pem"
         _write_text(ca_file, ca_pem)
         print(f"Wrote CA certs: {ca_file}")
+        ca_blocks = _split_pem_certs(ca_pem)
 
     verify: object
     if args.insecure:
@@ -300,33 +738,98 @@ def run(args: argparse.Namespace) -> int:
     password = _load_console_password(args)
     client.login(args.user, password)
 
+    selected_adcs: List[str] = []
+    if args.list_adc_menu:
+        devices = nsconsole_deploy._list_managed_devices(client, primary_only=True)
+        selected_adcs = nsconsole_deploy._select_adc_menu(devices)
+        if not selected_adcs:
+            raise SystemExit("No ADCs selected.")
+        args.adc_ip = selected_adcs
+        args.list_adc_menu = False
+
     basicauth_changed = False
     try:
         basicauth_changed = _maybe_enable_basicauth(client)
 
         certkeypair_name = args.certkeypair_name or _normalize_name(args.cn)
-        _upload_console_certkey(
+        ca_certkey_name = None
+        ca_certkey_names: List[str] = []
+
+        if ca_file and ca_blocks:
+            for ca_block in ca_blocks:
+                ca_block_cn = _cert_cn_from_pem(ca_block) or ca_cn or "Root_CA"
+                ca_name = _normalize_name(ca_block_cn)
+                ca_store_id = _upload_ca_cert_store(
+                    client,
+                    ca_name=ca_name,
+                    ca_pem=ca_block,
+                )
+                if not ca_store_id:
+                    items = _list_cert_store(client)
+                    if items:
+                        print(f"[console] cert_store sample: {_summarize_cert_store(items)}")
+                    raise SystemExit(f"CA cert_store entry not created for {ca_name}.")
+                try:
+                    _register_certkey_from_store(
+                        client,
+                        certkeypair_name=ca_name,
+                        cert_store_id=ca_store_id,
+                        passphrase=None,
+                        chain_pem=None,
+                        ns_ip_addresses=selected_adcs or args.adc_ip,
+                    )
+                except NitroError as exc:
+                    raise SystemExit(f"[console] CA certkey registration failed for {ca_name}: {exc}") from exc
+                ca_certkey_names.append(ca_name)
+                ca_certkey_name = ca_name
+                print(f"Registered CA certkey from cert_store: {ca_name}")
+
+        print("[console] Uploading server cert/key to cert_store.")
+        cert_meta = _cert_subject_serial_from_pem(leaf_pem)
+        response = _upload_console_cert_store(
             client,
             certkeypair_name=certkeypair_name,
             cert_file=cert_path,
             key_file=key_path,
             passphrase=key_passphrase,
-            console_user=args.user,
-            console_password=password,
+            domain=args.cn,
+            chain_pem=None,
         )
-        print(f"Uploaded certkeypair to Console: {certkeypair_name}")
-
-        ca_certkey_name = None
-        if ca_file:
-            ca_certkey_name = f"{certkeypair_name}_ca"
-            _upload_console_ca(
+        print(f"Uploaded cert to Console cert_store: {certkeypair_name}")
+        cert_store = None
+        if isinstance(response, dict):
+            items = response.get("cert_store")
+            if isinstance(items, list) and items:
+                cert_store = items[0]
+            elif isinstance(items, dict):
+                cert_store = items
+        if not cert_store or not cert_store.get("id"):
+            cert_store = _find_cert_store_entry(
                 client,
-                ca_name=ca_certkey_name,
-                ca_file=ca_file,
-                console_user=args.user,
-                console_password=password,
+                name=certkeypair_name,
+                domain="",
+                retries=20,
+                wait_seconds=5,
             )
-            print(f"Uploaded CA certkey to Console: {ca_certkey_name}")
+        if not cert_store or not cert_store.get("id"):
+            items = _list_cert_store(client)
+            print("[console] cert_store entry not found after upload; skipping certkey registration.")
+            if items:
+                print(f"[console] cert_store sample: {_summarize_cert_store(items)}")
+            raise SystemExit(f"cert_store entry not found for {certkeypair_name}.")
+        _register_certkey_from_store(
+            client,
+            certkeypair_name=certkeypair_name,
+            cert_store_id=str(cert_store["id"]),
+            passphrase=key_passphrase,
+            chain_pem=ca_pem,
+            ns_ip_addresses=selected_adcs or args.adc_ip,
+        )
+        print(f"Registered certkeypair from cert_store: {certkeypair_name}")
+        if not _find_certkeypair(client, certkeypair_name, retries=3, wait_seconds=2):
+            _trigger_cert_inventory(client)
+            if not _find_certkeypair(client, certkeypair_name, retries=6, wait_seconds=3):
+                raise SystemExit(f"Certkeypair not found after cert_store upload: {certkeypair_name}")
 
         deploy_args = [
             "--console",
@@ -336,6 +839,7 @@ def run(args: argparse.Namespace) -> int:
             "--certkeypair",
             certkeypair_name,
         ]
+        deploy_args += ["--sync", "--sync-wait", "10"]
         if args.insecure:
             deploy_args.append("--insecure")
         if args.ca_bundle:
@@ -344,7 +848,10 @@ def run(args: argparse.Namespace) -> int:
             deploy_args.extend(["--adc-ip", ip])
         if args.list_adc_menu:
             deploy_args.extend(["--list-adc", "menu"])
-        if ca_certkey_name and ca_file:
+        if ca_certkey_names:
+            for name in ca_certkey_names:
+                deploy_args.extend(["--ca-certkey", name])
+        elif ca_certkey_name and ca_file:
             deploy_args.extend(["--ca-certkey", ca_certkey_name, "--ca-cert-file", str(ca_file)])
 
         deploy_ns = nsconsole_deploy.build_arg_parser().parse_args(deploy_args)
