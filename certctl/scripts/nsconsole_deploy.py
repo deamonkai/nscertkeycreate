@@ -14,6 +14,43 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from certctl.console import NitroConsoleClient, NitroError
 
+_DEBUG = False
+
+
+def _set_debug(enabled: bool) -> None:
+    global _DEBUG
+    _DEBUG = bool(enabled)
+
+
+def _redact_payload(value: Any) -> Any:
+    if isinstance(value, dict):
+        redacted = {}
+        for key, item in value.items():
+            if key in {"password", "key_data", "certificate_data", "token", "secret"}:
+                redacted[key] = "<redacted>"
+                continue
+            if key == "cert_data" and isinstance(item, dict):
+                redacted[key] = {**item, "file_data": "<redacted>"} if "file_data" in item else item
+                continue
+            if key == "certchain_data" and isinstance(item, list):
+                redacted[key] = [
+                    {**entry, "file_data": "<redacted>"} if isinstance(entry, dict) and "file_data" in entry else entry
+                    for entry in item
+                ]
+                continue
+            redacted[key] = _redact_payload(item)
+        return redacted
+    if isinstance(value, list):
+        return [_redact_payload(item) for item in value]
+    return value
+
+
+def _debug_payload(label: str, payload: Dict[str, Any]) -> None:
+    if not _DEBUG:
+        return
+    print(f"[debug] {label}:")
+    print(json.dumps(_redact_payload(payload), indent=2, sort_keys=True))
+
 
 def _load_config(path: str) -> Dict[str, Any]:
     config_path = Path(path).expanduser()
@@ -171,6 +208,7 @@ def _try_import_with_name(
         }
     }
     try:
+        _debug_payload("ns_ssl_certkey POST (import)", payload)
         client.post_json("/nitro/v2/config/ns_ssl_certkey", payload)
     except NitroError as exc:
         return False, f"{exc.status_code} {exc.message}"
@@ -314,6 +352,7 @@ def _bind_cert(
         }
     }
     try:
+        _debug_payload("ns_ssl_certkey POST (bind_cert)", payload)
         client.post_json("/nitro/v2/config/ns_ssl_certkey", payload, params={"action": "bind_cert"})
         return
     except NitroError as exc:
@@ -329,6 +368,7 @@ def _bind_cert(
                 "entity_binding_arr": payload["ns_ssl_certkey"]["entity_binding_arr"],
             }
         }
+        _debug_payload("ns_ssl_certkey PUT (bind_cert fallback)", modify_payload)
         client.put_json(f"/nitro/v2/config/ns_ssl_certkey/{cert_id}", modify_payload)
 
 
@@ -373,11 +413,13 @@ def _upload_ca_cert(
                 "ssl_certificate": cert_path.name,
             }
         }
+        _debug_payload("ns_ssl_certkey POST (CA upload)", payload)
         client.post_json("/nitro/v2/config/ns_ssl_certkey", payload)
 
 
 def _link_ca(client: NitroConsoleClient, certkeypair: str, ca_name: str, ns_ip: str) -> None:
     payload = {"ns_ssl_certlink": {"certkey": certkeypair, "linkcertkeyname": ca_name, "ns_ip_address": ns_ip}}
+    _debug_payload("ns_ssl_certlink POST (link)", payload)
     client.post_json("/nitro/v2/config/ns_ssl_certlink", payload, params={"action": "link"})
 
 
@@ -483,6 +525,64 @@ def _select_adc_menu(devices: List[Dict[str, Any]]) -> List[str]:
 
 def run(args: argparse.Namespace) -> int:
     args = _apply_config(args)
+    _set_debug(args.debug)
+    if args.dry_run:
+        _set_debug(True)
+        if args.list_adc:
+            raise SystemExit("--list-adc is not supported with --dry-run.")
+        source_name = args.source_certkeypair or args.certkeypair
+        ns_ips = args.adc_ip or ["<adc-ip>"]
+        print("[dry-run] ADC deploy payloads:")
+        if args.import_missing:
+            for ns_ip in ns_ips:
+                payload = {
+                    "ns_ssl_certkey": {
+                        "certkeypair_name": args.certkeypair,
+                        "ns_ip_address_arr": [ns_ip],
+                        "source_ipaddress": ns_ip,
+                        "source_certificate": source_name,
+                    }
+                }
+                _debug_payload("ns_ssl_certkey POST (import)", payload)
+        for ns_ip in ns_ips:
+            payload = {
+                "ns_ssl_certkey": {
+                    "certkeypair_name": args.certkeypair,
+                    "entity_binding_arr": [
+                        {
+                            "certkeypair_name": args.certkeypair,
+                            "ns_ip_address": ns_ip,
+                            "id": "<binding-id>",
+                        }
+                    ],
+                }
+            }
+            _debug_payload("ns_ssl_certkey POST (bind_cert)", payload)
+        ca_pairs = _parse_ca_inputs(args)
+        if args.link_ca:
+            if not ca_pairs:
+                ca_pairs = [("CA_CERTKEY", None)]
+            for ca_name, ca_path in ca_pairs:
+                if ca_path:
+                    upload_payload = {
+                        "ns_ssl_certkey": {
+                            "certkeypair_name": ca_name,
+                            "ns_ip_address_arr": ns_ips,
+                            "certificate_file_name": ca_path.name,
+                            "ssl_certificate": ca_path.name,
+                        }
+                    }
+                    _debug_payload("ns_ssl_certkey POST (CA upload)", upload_payload)
+                for ns_ip in ns_ips:
+                    link_payload = {
+                        "ns_ssl_certlink": {
+                            "certkey": args.certkeypair,
+                            "linkcertkeyname": ca_name,
+                            "ns_ip_address": ns_ip,
+                        }
+                    }
+                    _debug_payload("ns_ssl_certlink POST (link)", link_payload)
+        return 0
     if not args.console or not args.user:
         raise SystemExit("Console URL and user are required (use CLI args or --config/--profile).")
 
@@ -617,6 +717,8 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--insecure", action="store_true", help="Disable TLS verification")
     parser.add_argument("--ca-bundle", help="Path to CA bundle for TLS verification")
     parser.add_argument("--timeout", type=int, default=60, help="HTTP timeout in seconds")
+    parser.add_argument("--debug", action="store_true", help="Enable debug logging and payload output")
+    parser.add_argument("--dry-run", action="store_true", help="Print payloads without API calls")
     parser.add_argument(
         "--sync",
         action="store_true",

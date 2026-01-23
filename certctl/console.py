@@ -100,11 +100,18 @@ class NitroConsoleClient:
         payload: Dict[str, Any],
         *,
         params: Optional[Dict[str, str]] = None,
+        headers: Optional[Dict[str, str]] = None,
+        use_cookie: bool = True,
     ) -> Dict[str, Any]:
         url = self._url(path)
+        base_headers: Dict[str, str] = {"Content-Type": "application/json", "Accept": "application/json"}
+        if use_cookie and self.token:
+            base_headers["Cookie"] = f"NITRO_AUTH_TOKEN={self.token}"
+        if headers:
+            base_headers.update(headers)
         resp = requests.post(
             url,
-            headers=self._headers({"Content-Type": "application/json", "Accept": "application/json"}),
+            headers=base_headers,
             params=params,
             json=payload,
             verify=self.verify,

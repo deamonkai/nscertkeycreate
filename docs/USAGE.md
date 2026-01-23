@@ -155,6 +155,9 @@ python -m certctl.scripts.selfsigned_console_deploy --cn www.molloytest.net --ki
   --console https://192.168.113.2 --user nsroot --insecure --list-adc-menu
 ```
 
+Add `--debug` to print JSON payloads (with secrets redacted).
+Use `--dry-run` to print the payloads without contacting Console/ADCs.
+
 Console cert_store probe (minimal payloads)
 -------------------------------------------
 
@@ -280,6 +283,9 @@ Deploy a certkey to the ADCs it is already bound to (from Console bindings):
 ```bash
 python -m certctl.scripts.nsconsole_deploy --config ./certctl.json --profile prod --certkeypair example.com_20260101
 ```
+
+Add `--debug` to print JSON payloads (with secrets redacted).
+Use `--dry-run` to print the payloads without contacting Console/ADCs.
 
 If the cert is on the ADC but not yet visible in Console, trigger an inventory refresh:
 

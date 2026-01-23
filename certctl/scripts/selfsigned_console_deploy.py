@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import base64
 import getpass
+import json
 import os
 import re
 import shutil
@@ -18,6 +19,8 @@ from typing import Any, Dict, List, Optional
 from certctl.ca.selfsigned import SelfSignedAdapter, SelfSignedConfig
 from certctl.console import NitroConsoleClient, NitroError
 from certctl.scripts import csr_create, keygen, nsconsole_deploy
+
+_DEBUG = False
 
 
 def _normalize_name(value: str) -> str:
@@ -46,6 +49,41 @@ def _selfsign_passphrase(args: argparse.Namespace) -> str:
     return getpass.getpass("Self-signed CA passphrase (AES-256): ")
 
 
+def _set_debug(enabled: bool) -> None:
+    global _DEBUG
+    _DEBUG = bool(enabled)
+
+
+def _redact_payload(value: Any) -> Any:
+    if isinstance(value, dict):
+        redacted = {}
+        for key, item in value.items():
+            if key in {"password", "key_data", "certificate_data", "token", "secret"}:
+                redacted[key] = "<redacted>"
+                continue
+            if key == "cert_data" and isinstance(item, dict):
+                redacted[key] = {**item, "file_data": "<redacted>"} if "file_data" in item else item
+                continue
+            if key == "certchain_data" and isinstance(item, list):
+                redacted[key] = [
+                    {**entry, "file_data": "<redacted>"} if isinstance(entry, dict) and "file_data" in entry else entry
+                    for entry in item
+                ]
+                continue
+            redacted[key] = _redact_payload(item)
+        return redacted
+    if isinstance(value, list):
+        return [_redact_payload(item) for item in value]
+    return value
+
+
+def _debug_payload(label: str, payload: Dict[str, Any]) -> None:
+    if not _DEBUG:
+        return
+    print(f"[debug] {label}:")
+    print(json.dumps(_redact_payload(payload), indent=2, sort_keys=True))
+
+
 def _extract_chain_cas(chain_pem: str) -> str:
     blocks = re.findall(
         r"-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----",
@@ -71,6 +109,26 @@ def _b64_clean(value: str) -> str:
     return encoded.rstrip("%")
 
 
+def _pem_body_base64(pem: str) -> str:
+    lines = []
+    for line in pem.strip().splitlines():
+        line = line.strip()
+        if not line or line.startswith("-----BEGIN ") or line.startswith("-----END "):
+            continue
+        lines.append(line)
+    return "".join(lines)
+
+
+def _encode_pem(pem: str, mode: str) -> str:
+    if mode == "pem-body":
+        return _pem_body_base64(pem)
+    if mode == "pem-b64":
+        return _b64_clean(pem)
+    if mode == "raw-pem":
+        return pem
+    raise ValueError(f"Unsupported PEM encoding mode: {mode}")
+
+
 def _store_code_error(response: Dict[str, Any]) -> Optional[str]:
     items = response.get("cert_store")
     if isinstance(items, list) and items:
@@ -84,6 +142,40 @@ def _store_code_error(response: Dict[str, Any]) -> Optional[str]:
     return None
 
 
+def _post_cert_store(
+    client: NitroConsoleClient,
+    payload: Dict[str, Any],
+    *,
+    basic_user: Optional[str],
+    basic_password: Optional[str],
+    retry_label: str,
+) -> Dict[str, Any]:
+    use_header_auth = bool(basic_user and basic_password)
+    if use_header_auth:
+        _debug_payload(f"cert_store POST ({retry_label}, header auth)", payload)
+        response = client.post_json(
+            "/nitro/v2/config/cert_store",
+            payload,
+            headers={"X-NITRO-USER": basic_user, "X-NITRO-PASS": basic_password},
+            use_cookie=False,
+        )
+    else:
+        _debug_payload(f"cert_store POST ({retry_label}, cookie auth)", payload)
+        response = client.post_json("/nitro/v2/config/cert_store", payload)
+    store_code = _store_code_error(response)
+    items = response.get("cert_store")
+    has_id = False
+    if isinstance(items, list) and items and items[0].get("id"):
+        has_id = True
+    if isinstance(items, dict) and items.get("id"):
+        has_id = True
+    if (store_code or not has_id) and use_header_auth:
+        print(f"[console] cert_store {retry_label} did not return id; retrying with cookie auth.")
+        _debug_payload(f"cert_store POST ({retry_label}, cookie auth retry)", payload)
+        response = client.post_json("/nitro/v2/config/cert_store", payload)
+    return response
+
+
 def _cert_store_payload(
     *,
     name: str,
@@ -92,33 +184,28 @@ def _cert_store_payload(
     key_file_name: Optional[str],
     key_pem: Optional[str],
     passphrase: Optional[str],
-    domain: Optional[str],
     chain_pem: Optional[str],
-    cert_type: Optional[str],
-    encode_b64: bool,
+    cert_data_mode: str,
+    chain_data_mode: str,
+    key_data_mode: str,
 ) -> Dict[str, Any]:
-    cert_data = _b64_clean(cert_pem) if encode_b64 else cert_pem
+    cert_data = _encode_pem(cert_pem, cert_data_mode)
     payload: Dict[str, Any] = {
         "cert_store": {
             "name": name,
-            "cert_format": "PEM",
             "cert_data": {"file_name": cert_file_name, "file_data": cert_data},
         }
     }
-    if cert_type:
-        payload["cert_store"]["cert_type"] = cert_type
     if key_pem and passphrase is not None:
         if key_file_name:
             payload["cert_store"]["key_file"] = key_file_name
-        payload["cert_store"]["key_data"] = _b64_clean(key_pem) if encode_b64 else key_pem
+        payload["cert_store"]["key_data"] = _encode_pem(key_pem, key_data_mode)
         payload["cert_store"]["password"] = passphrase
-    if domain:
-        payload["cert_store"]["domain"] = domain
     if chain_pem:
         payload["cert_store"]["certchain_data"] = [
             {
                 "file_name": "chain.pem",
-                "file_data": _b64_clean(chain_pem) if encode_b64 else chain_pem,
+                "file_data": _encode_pem(chain_pem, chain_data_mode),
             }
         ]
     return payload
@@ -208,6 +295,25 @@ def _cert_subject_serial_from_pem(pem: str) -> Dict[str, str]:
         elif line.startswith("serial="):
             serial = line.replace("serial=", "", 1).strip()
     return {"subject": subject, "serial": serial}
+
+
+def _cert_store_matches(entry: Dict[str, Any], cert_pem: str) -> bool:
+    meta = _cert_subject_serial_from_pem(cert_pem)
+    entry_subject = str(entry.get("subject") or "")
+    entry_serial = str(entry.get("serial_number") or "")
+    if _DEBUG:
+        print(
+            "[debug] cert_store compare:"
+            f" entry_subject={entry_subject!r}"
+            f" entry_serial={entry_serial!r}"
+            f" new_subject={meta.get('subject', '')!r}"
+            f" new_serial={meta.get('serial', '')!r}"
+        )
+    if not entry_subject or not entry_serial:
+        return False
+    if _normalize_subject(entry_subject) != _normalize_subject(meta.get("subject", "")):
+        return False
+    return entry_serial.lower() == meta.get("serial", "").lower()
 
 def _is_basicauth_enabled(value: object) -> bool:
     if isinstance(value, bool):
@@ -329,43 +435,81 @@ def _upload_console_cert_store(
     cert_file: Path,
     key_file: Path,
     passphrase: str,
-    domain: Optional[str] = None,
     chain_pem: Optional[str] = None,
+    basic_user: Optional[str] = None,
+    basic_password: Optional[str] = None,
 ) -> Dict[str, Any]:
     cert_pem = _read_text(cert_file)
     key_pem = _read_text(key_file)
     store_cert_name = f"{certkeypair_name}.pem"
     store_key_name = certkeypair_name
-    print(f"[console] cert_store entry not found; creating {certkeypair_name}.")
-    payload = _cert_store_payload(
-        name=certkeypair_name,
-        cert_file_name=store_cert_name,
-        cert_pem=cert_pem,
-        key_file_name=store_key_name,
-        key_pem=key_pem,
-        passphrase=passphrase,
-        domain=domain,
-        chain_pem=chain_pem,
-        cert_type="server_cert",
-        encode_b64=True,
-    )
-    cert_meta = _cert_subject_serial_from_pem(cert_pem)
-    try:
-        response = client.post_json("/nitro/v2/config/cert_store", payload)
-        store_code = _store_code_error(response)
-        if store_code:
-            print(f"[console] cert_store upload returned store_code={store_code} for {certkeypair_name}.")
-            print(
-                "[console] cert_store payload sizes:"
-                f" cert_b64={len(_b64_clean(cert_pem))}"
-                f" key_b64={len(_b64_clean(key_pem))}"
-                f" chain_b64={len(_b64_clean(chain_pem)) if chain_pem else 0}"
+    existing = _find_cert_store_entry(client, name=certkeypair_name, retries=1, wait_seconds=0)
+    if existing and existing.get("id"):
+        if _cert_store_matches(existing, cert_pem):
+            print(f"[console] cert_store entry already matches {certkeypair_name}; skipping update.")
+            return {"cert_store": [existing]}
+        print(f"[console] cert_store entry exists; updating {certkeypair_name}.")
+        try:
+            response = _update_cert_store(
+                client,
+                entry_id=str(existing["id"]),
+                name=certkeypair_name,
+                cert_file_name=store_cert_name,
+                cert_pem=cert_pem,
+                key_file_name=store_key_name,
+                key_pem=key_pem,
+                passphrase=passphrase,
+                chain_pem=chain_pem,
+                cert_data_mode="pem-b64",
+                chain_data_mode="pem-b64",
+                key_data_mode="pem-b64",
             )
-        items = response.get("cert_store")
-        if isinstance(items, list) and items and items[0].get("id"):
             return response
-        if isinstance(items, dict) and items.get("id"):
-            return response
+        except NitroError as exc:
+            if "no updates have been applied" in str(exc.message).lower():
+                print(f"[console] cert_store update not needed for {certkeypair_name}.")
+                return {"cert_store": [existing]}
+            raise
+    print(f"[console] cert_store entry not found; creating {certkeypair_name}.")
+    encode_modes = ("pem-b64",)
+    try:
+        response: Dict[str, Any] = {}
+        for idx, mode in enumerate(encode_modes, start=1):
+            payload = _cert_store_payload(
+                name=certkeypair_name,
+                cert_file_name=store_cert_name,
+                cert_pem=cert_pem,
+                key_file_name=store_key_name,
+                key_pem=key_pem,
+                passphrase=passphrase,
+                chain_pem=chain_pem,
+                cert_data_mode=mode,
+                chain_data_mode=mode,
+                key_data_mode="pem-b64",
+            )
+            response = _post_cert_store(
+                client,
+                payload,
+                basic_user=basic_user,
+                basic_password=basic_password,
+                retry_label=f"upload ({mode})",
+            )
+            store_code = _store_code_error(response)
+            if store_code:
+                print(f"[console] cert_store upload returned store_code={store_code} for {certkeypair_name}.")
+                print(
+                    "[console] cert_store payload sizes:"
+                    f" cert_len={len(_encode_pem(cert_pem, mode))}"
+                    f" key_len={len(_encode_pem(key_pem, 'pem-b64'))}"
+                    f" chain_len={len(_encode_pem(chain_pem, mode)) if chain_pem else 0}"
+                )
+            items = response.get("cert_store")
+            if isinstance(items, list) and items and items[0].get("id"):
+                return response
+            if isinstance(items, dict) and items.get("id"):
+                return response
+            if idx < len(encode_modes):
+                print("[console] cert_store upload did not return id; retrying with alternate encoding.")
         print(f"[console] cert_store upload response missing id for {certkeypair_name}: {response}")
         return response
     except NitroError as exc:
@@ -375,25 +519,34 @@ def _upload_console_cert_store(
             existing = _find_cert_store_entry(
                 client,
                 name=certkeypair_name,
-                domain="",
                 retries=3,
                 wait_seconds=2,
             )
             if existing:
-                response = _update_cert_store(
-                    client,
-                    entry_id=str(existing["id"]),
-                    name=certkeypair_name,
-                    cert_file_name=store_cert_name,
-                    cert_pem=cert_pem,
-                    key_file_name=store_key_name,
-                    key_pem=key_pem,
-                    passphrase=passphrase,
-                    domain=domain,
-                    chain_pem=chain_pem,
-                    encode_b64=True,
-                )
-                return response
+                if _cert_store_matches(existing, cert_pem):
+                    print(f"[console] cert_store entry already matches {certkeypair_name}; skipping update.")
+                    return {"cert_store": [existing]}
+                try:
+                    response = _update_cert_store(
+                        client,
+                        entry_id=str(existing["id"]),
+                        name=certkeypair_name,
+                        cert_file_name=store_cert_name,
+                        cert_pem=cert_pem,
+                        key_file_name=store_key_name,
+                        key_pem=key_pem,
+                        passphrase=passphrase,
+                        chain_pem=chain_pem,
+                        cert_data_mode="pem-b64",
+                        chain_data_mode="pem-b64",
+                        key_data_mode="pem-b64",
+                    )
+                    return response
+                except NitroError as update_exc:
+                    if "no updates have been applied" in str(update_exc.message).lower():
+                        print(f"[console] cert_store update not needed for {certkeypair_name}.")
+                        return {"cert_store": [existing]}
+                    raise
         raise
 
 
@@ -419,7 +572,6 @@ def _find_cert_store_entry(
     client: NitroConsoleClient,
     *,
     name: str,
-    domain: str,
     subject: str = "",
     serial: str = "",
     key_file: str = "",
@@ -467,7 +619,17 @@ def _register_certkey_from_store(
         ]
     if ns_ip_addresses:
         payload["ns_ssl_certkey"]["ns_ip_address_arr"] = ns_ip_addresses
-    client.post_json("/nitro/v2/config/ns_ssl_certkey", payload)
+    _debug_payload("ns_ssl_certkey POST (from cert_store)", payload)
+    try:
+        client.post_json("/nitro/v2/config/ns_ssl_certkey", payload)
+    except NitroError as exc:
+        message = str(exc.message)
+        if "not a directory: /var/mps/tenants/root/ns_ssl_certs/" in message:
+            raise SystemExit(
+                "Console staging path is not a directory: /var/mps/tenants/root/ns_ssl_certs/. "
+                "Fix the path on the Console (directory + permissions), then retry."
+            ) from exc
+        raise
 
 
 def _register_ca_certkey_inline(
@@ -486,6 +648,7 @@ def _register_ca_certkey_inline(
     }
     if ns_ip_addresses:
         payload["ns_ssl_certkey"]["ns_ip_address_arr"] = ns_ip_addresses
+    _debug_payload("ns_ssl_certkey POST (inline CA)", payload)
     client.post_json("/nitro/v2/config/ns_ssl_certkey", payload)
 
 
@@ -515,55 +678,100 @@ def _upload_ca_cert_store(
     *,
     ca_name: str,
     ca_pem: str,
+    basic_user: Optional[str] = None,
+    basic_password: Optional[str] = None,
 ) -> Optional[str]:
+    existing = _find_cert_store_entry(client, name=ca_name, retries=1, wait_seconds=0)
+    if existing and existing.get("id"):
+        if _cert_store_matches(existing, ca_pem):
+            print(f"[console] CA cert_store entry already matches {ca_name}; skipping update.")
+            return str(existing["id"])
+        print(f"[console] CA cert_store entry exists; updating {ca_name}.")
+        try:
+            _update_cert_store(
+                client,
+                entry_id=str(existing["id"]),
+                name=ca_name,
+                cert_file_name=f"{ca_name}.pem",
+                cert_pem=ca_pem,
+                key_file_name=None,
+                key_pem=None,
+                passphrase=None,
+                chain_pem=None,
+                cert_data_mode="pem-b64",
+                chain_data_mode="pem-b64",
+                key_data_mode="pem-b64",
+            )
+            return str(existing["id"])
+        except NitroError as exc:
+            if "no updates have been applied" in str(exc.message).lower():
+                print(f"[console] CA cert_store update not needed for {ca_name}.")
+                return str(existing["id"])
+            raise
     print(f"[console] CA cert_store entry not found; creating {ca_name}.")
-    payload = _cert_store_payload(
-        name=ca_name,
-        cert_file_name=f"{ca_name}.pem",
-        cert_pem=ca_pem,
-        key_file_name=None,
-        key_pem=None,
-        passphrase=None,
-        domain=None,
-        chain_pem=None,
-        cert_type="server_cert",
-        encode_b64=True,
-    )
     try:
-        response = client.post_json("/nitro/v2/config/cert_store", payload)
-        store_code = _store_code_error(response)
-        if store_code:
-            print(f"[console] CA cert_store upload returned store_code={store_code} for {ca_name}.")
+        response: Dict[str, Any] = {}
+        for idx, mode in enumerate(("pem-b64",), start=1):
+            payload = _cert_store_payload(
+                name=ca_name,
+                cert_file_name=f"{ca_name}.pem",
+                cert_pem=ca_pem,
+                key_file_name=None,
+                key_pem=None,
+                passphrase=None,
+                chain_pem=None,
+                cert_data_mode=mode,
+                chain_data_mode=mode,
+                key_data_mode="pem-b64",
+            )
+            response = _post_cert_store(
+                client,
+                payload,
+                basic_user=basic_user,
+                basic_password=basic_password,
+                retry_label=f"CA upload ({mode})",
+            )
+            store_code = _store_code_error(response)
+            if store_code:
+                print(f"[console] CA cert_store upload returned store_code={store_code} for {ca_name}.")
+                print(f"[console] CA cert payload size: cert_len={len(_encode_pem(ca_pem, mode))}")
+            items = response.get("cert_store")
+            if isinstance(items, list) and items and items[0].get("id"):
+                return str(items[0]["id"])
+            if isinstance(items, dict) and items.get("id"):
+                return str(items["id"])
+            if idx < 2:
+                print("[console] CA cert_store upload did not return id; retrying with alternate encoding.")
     except NitroError as exc:
         message = str(exc.message).lower()
         if exc.status_code == 409 or "already exists" in message:
-            entry = _find_cert_store_entry(client, name=ca_name, domain="", retries=3, wait_seconds=2)
+            entry = _find_cert_store_entry(client, name=ca_name, retries=3, wait_seconds=2)
             if entry and entry.get("id"):
-                response = _update_cert_store(
-                    client,
-                    entry_id=str(entry["id"]),
-                    name=ca_name,
-                    cert_file_name=f"{ca_name}.pem",
-                    cert_pem=ca_pem,
-                    key_file_name=None,
-                    key_pem=None,
-                    passphrase=None,
-                    domain=None,
-                    chain_pem=None,
-                    encode_b64=True,
-                )
-                return str(entry["id"])
+                try:
+                    _update_cert_store(
+                        client,
+                        entry_id=str(entry["id"]),
+                        name=ca_name,
+                        cert_file_name=f"{ca_name}.pem",
+                        cert_pem=ca_pem,
+                        key_file_name=None,
+                        key_pem=None,
+                        passphrase=None,
+                        chain_pem=None,
+                        cert_data_mode="pem-b64",
+                        chain_data_mode="pem-b64",
+                        key_data_mode="pem-b64",
+                    )
+                    return str(entry["id"])
+                except NitroError as update_exc:
+                    if "no updates have been applied" in str(update_exc.message).lower():
+                        print(f"[console] CA cert_store update not needed for {ca_name}.")
+                        return str(entry["id"])
+                    raise
         print(f"[console] CA cert_store upload failed for {ca_name}: {exc}")
         return None
-    items = response.get("cert_store")
-    if isinstance(items, list) and items:
-        entry_id = items[0].get("id") or ""
-        if entry_id:
-            return str(entry_id)
-    if isinstance(items, dict) and items.get("id"):
-        return str(items["id"])
     print(f"[console] CA cert_store upload response missing id for {ca_name}: {response}")
-    entry = _find_cert_store_entry(client, name=ca_name, domain="", retries=10, wait_seconds=3)
+    entry = _find_cert_store_entry(client, name=ca_name, retries=10, wait_seconds=3)
     if entry and entry.get("id"):
         return str(entry["id"])
     return None
@@ -579,9 +787,10 @@ def _update_cert_store(
     key_file_name: Optional[str],
     key_pem: Optional[str],
     passphrase: Optional[str],
-    domain: Optional[str],
     chain_pem: Optional[str],
-    encode_b64: bool = True,
+    cert_data_mode: str,
+    chain_data_mode: str,
+    key_data_mode: str,
 ) -> Dict[str, Any]:
     payload = _cert_store_payload(
         name=name,
@@ -590,14 +799,15 @@ def _update_cert_store(
         key_file_name=key_file_name,
         key_pem=key_pem,
         passphrase=passphrase,
-        domain=domain,
         chain_pem=chain_pem,
-        cert_type=None,
-        encode_b64=encode_b64,
+        cert_data_mode=cert_data_mode,
+        chain_data_mode=chain_data_mode,
+        key_data_mode=key_data_mode,
     )
     payload["cert_store"]["id"] = entry_id
     payload["cert_store"]["update_cert_and_key"] = bool(key_pem)
     payload["cert_store"]["update_cert_chain"] = bool(chain_pem)
+    _debug_payload("cert_store PUT", payload)
     return client.put_json(f"/nitro/v2/config/cert_store/{entry_id}", payload)
 
 
@@ -626,6 +836,7 @@ def _upload_console_ca(
         }
     }
     try:
+        _debug_payload("ns_ssl_certkey POST (inline CA)", payload)
         client.post_json("/nitro/v2/config/ns_ssl_certkey", payload)
         return
     except NitroError as exc:
@@ -660,6 +871,7 @@ def _upload_console_ca(
 
 
 def run(args: argparse.Namespace) -> int:
+    _set_debug(args.debug)
     if not args.console or not args.user:
         raise SystemExit("Console URL and user are required.")
 
@@ -726,6 +938,56 @@ def run(args: argparse.Namespace) -> int:
         print(f"Wrote CA certs: {ca_file}")
         ca_blocks = _split_pem_certs(ca_pem)
 
+    if args.dry_run:
+        _set_debug(True)
+        if args.list_adc_menu:
+            raise SystemExit("--list-adc-menu is not supported with --dry-run. Use --adc-ip instead.")
+        certkeypair_name = args.certkeypair_name or _normalize_name(args.cn)
+        print("[dry-run] Console cert_store payloads:")
+        if ca_blocks:
+            for ca_block in ca_blocks:
+                ca_block_cn = _cert_cn_from_pem(ca_block) or ca_cn or "Root_CA"
+                ca_name = _normalize_name(ca_block_cn)
+                ca_payload = _cert_store_payload(
+                    name=ca_name,
+                    cert_file_name=f"{ca_name}.pem",
+                    cert_pem=ca_block,
+                    key_file_name=None,
+                    key_pem=None,
+                    passphrase=None,
+                    chain_pem=None,
+                    cert_data_mode="pem-b64",
+                    chain_data_mode="pem-b64",
+                    key_data_mode="pem-b64",
+                )
+                _debug_payload(f"cert_store POST (CA {ca_name})", ca_payload)
+        server_payload = _cert_store_payload(
+            name=certkeypair_name,
+            cert_file_name=cert_path.name,
+            cert_pem=leaf_pem,
+            key_file_name=key_path.name,
+            key_pem=key_path.read_text(encoding="utf-8"),
+            passphrase=key_passphrase,
+            chain_pem=None,
+            cert_data_mode="pem-b64",
+            chain_data_mode="pem-b64",
+            key_data_mode="pem-b64",
+        )
+        _debug_payload(f"cert_store POST (server {certkeypair_name})", server_payload)
+        adc_ips = args.adc_ip or []
+        certkey_payload = {
+            "ns_ssl_certkey": {
+                "certkeypair_name": certkeypair_name,
+                "cert_store_id": "<cert_store_id>",
+            }
+        }
+        if key_passphrase:
+            certkey_payload["ns_ssl_certkey"]["password"] = "<key-passphrase>"
+        if adc_ips:
+            certkey_payload["ns_ssl_certkey"]["ns_ip_address_arr"] = adc_ips
+        _debug_payload("ns_ssl_certkey POST (from cert_store)", certkey_payload)
+        return 0
+
     verify: object
     if args.insecure:
         verify = False
@@ -763,6 +1025,8 @@ def run(args: argparse.Namespace) -> int:
                     client,
                     ca_name=ca_name,
                     ca_pem=ca_block,
+                    basic_user=args.user,
+                    basic_password=password,
                 )
                 if not ca_store_id:
                     items = _list_cert_store(client)
@@ -792,8 +1056,9 @@ def run(args: argparse.Namespace) -> int:
             cert_file=cert_path,
             key_file=key_path,
             passphrase=key_passphrase,
-            domain=args.cn,
             chain_pem=None,
+            basic_user=args.user,
+            basic_password=password,
         )
         print(f"Uploaded cert to Console cert_store: {certkeypair_name}")
         cert_store = None
@@ -807,7 +1072,6 @@ def run(args: argparse.Namespace) -> int:
             cert_store = _find_cert_store_entry(
                 client,
                 name=certkeypair_name,
-                domain="",
                 retries=20,
                 wait_seconds=5,
             )
@@ -848,6 +1112,8 @@ def run(args: argparse.Namespace) -> int:
             deploy_args.extend(["--adc-ip", ip])
         if args.list_adc_menu:
             deploy_args.extend(["--list-adc", "menu"])
+        if args.debug:
+            deploy_args.append("--debug")
         if ca_certkey_names:
             for name in ca_certkey_names:
                 deploy_args.extend(["--ca-certkey", name])
@@ -899,6 +1165,8 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--timeout", type=int, default=60, help="HTTP timeout in seconds")
     parser.add_argument("--adc-ip", action="append", help="Target ADC IP (repeatable)")
     parser.add_argument("--list-adc-menu", action="store_true", help="Select ADCs from Console menu")
+    parser.add_argument("--debug", action="store_true", help="Enable debug logging and payload output")
+    parser.add_argument("--dry-run", action="store_true", help="Print payloads without API calls")
     return parser
 
 
